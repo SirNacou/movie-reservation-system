@@ -1,0 +1,10 @@
+version: "3"
+
+tasks:
+  dev:
+    dir: "."
+    cmds:
+      - docker compose up --watch --build
+
+  db:push:
+    cmd: docker compose exec api bun --cwd apps/api db:push

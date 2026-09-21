@@ -1,0 +1,16 @@
+FROM oven/bun:1-slim
+
+WORKDIR /app
+
+# Copy dependency manifests
+COPY package.json bun.lock turbo.json ./
+COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
+COPY packages/contract/package.json ./packages/contract/
+
+# Install dependencies inside Linux environment
+RUN bun install
+
+# Copy source tree and compile contract dist initially
+COPY . .
+RUN bun run --filter @repo/contract build

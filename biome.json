@@ -1,0 +1,80 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": [
+			"apps/**/src/**/*.{ts,tsx,js,jsx,json}",
+			"packages/**/src/**/*.{ts,tsx,js,jsx,json}",
+			"*.json"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 120
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "recommended",
+			"correctness": {
+				"noUnusedVariables": "warn"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"semicolons": null,
+			"trailingCommas": "es5"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": [
+				"apps/api/**"
+			],
+			"javascript": {
+				"formatter": {
+					"quoteStyle": "single",
+					"semicolons": "always",
+					"trailingCommas": "all"
+				}
+			},
+			"linter": {
+				"rules": {
+					"style": {
+						"useImportType": "off",
+						"noParameterProperties": "off"
+					},
+					"complexity": {
+						"noUselessConstructor": "off"
+					},
+					"correctness": {
+						"noUnusedVariables": "warn"
+					}
+				}
+			}
+		}
+	]
+}
