@@ -1,3 +1,4 @@
+name: movie-reservation
 services:
   postgres:
     image: postgres:18-alpine
@@ -15,16 +16,35 @@ services:
       timeout: 5s
       retries: 5
 
-  db-push:
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Dedicated migration container (runs to completion on boot)
+  migrator:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: bun --cwd apps/api drizzle-kit push --force
+    init: true
+    restart: "no"
+    command: bun run --cwd apps/api migration:up
     env_file:
       - .env
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      # Ensures new migration files written by the CLI sync to your host machine
+      - ./apps/api/src/common/infrastructure/database/migrations:/app/apps/api/src/common/infrastructure/database/migrations
 
   api:
     build:
@@ -36,11 +56,11 @@ services:
       - .env
     ports:
       - "4000:4000"
-    environment:
-      - NODE_ENV=development
     depends_on:
       postgres:
         condition: service_healthy
+      migrator:
+        condition: service_completed_successfully # Waits until migrations succeed
     develop:
       watch:
         # Rebuild container on dependency updates
@@ -78,9 +98,6 @@ services:
       - .env
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - API_URL=http://api:4000
     develop:
       watch:
         - action: rebuild
@@ -104,3 +121,4 @@ services:
 
 volumes:
   postgres_data:
+  redis_data:

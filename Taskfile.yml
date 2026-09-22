@@ -1,10 +1,84 @@
 version: "3"
 
+vars:
+  API_DIR: apps/api
+  DOCKER_SERVICE: api
+  MIGRATOR_SERVICE: migrator
+
 tasks:
-  dev:
-    dir: "."
+  default:
+    desc: List all available tasks
+    cmds:
+      - task --list
+
+  # ---------------------------------------------------------------------------
+  # Database Migrations (Run inside Docker Compose)
+  # ---------------------------------------------------------------------------
+  migration:create:
+    desc: Create a new migration diff
+    cmds:
+      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:create -- {{.CLI_ARGS}}
+
+  migration:initial:
+    desc: Create the initial baseline migration
+    cmds:
+      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:create -- --initial
+
+  migration:blank:
+    desc: Create a blank migration file to write custom SQL
+    cmds:
+      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd {{.API_DIR}} migration:create -- --blank {{.CLI_ARGS}}
+
+  migration:up:
+    desc: Run pending migrations
+    cmds:
+      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:up
+
+  migration:down:
+    desc: Roll back last migration
+    cmds:
+      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:down
+
+  migration:pending:
+    desc: List all pending migrations
+    cmds:
+      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd {{.API_DIR}} migration:pending
+
+  migration:fresh:
+    desc: Drop database schema and re-run all migrations from scratch
+    cmds:
+      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd {{.API_DIR}} migration:fresh
+
+  # ---------------------------------------------------------------------------
+  # Docker / Dev Utilities
+  # ---------------------------------------------------------------------------
+  watch:
+    desc: Start all containers in background
     cmds:
       - docker compose up --watch --build
 
-  db:push:
-    cmd: docker compose exec api bun --cwd apps/api db:push
+  up:
+    desc: Start all containers in background
+    cmds:
+      - docker compose up -d
+
+  down:
+    desc: Stop all containers
+    cmds:
+      - docker compose down
+
+  clean:
+    desc: Stop all containers
+    cmds:
+      - docker compose down
+
+  logs:
+    desc: Tail API service logs
+    cmds:
+      - docker compose logs -f {{.DOCKER_SERVICE}}
+
+  sh:
+    desc: Open an interactive shell inside the API container
+    interactive: true
+    cmds:
+      - docker compose exec -it -w /app/{{.API_DIR}} {{.DOCKER_SERVICE}} sh

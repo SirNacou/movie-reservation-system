@@ -1,26 +1,19 @@
-import { TaggedError } from 'better-result';
+import { ValidationError } from '@/common/domain/errors.js';
 
-export class EmptyMovieTitle extends TaggedError('EmptyMovieTitle')<{
-	message: string;
-}> {
-	constructor() {
+export type MovieError = EmptyMovieTitleError | InvalidMovieDurationError | InvalidMovieId;
+
+export class EmptyMovieTitleError extends ValidationError {
+	cause: "Title can't be empty.";
+}
+
+export class InvalidMovieDurationError extends ValidationError {
+	constructor(readonly duration: number) {
 		super({
-			message: "Movie title can't be empty",
+			cause: `Movie duration must be greater than 0 minutes. Received: ${duration}`,
 		});
 	}
 }
 
-export class InvalidMovieId extends TaggedError('InvalidMovieId')<{
-	input: string;
-	message: string;
-}> {
-	/**
-	 *
-	 */
-	constructor(input: string) {
-		super({
-			input,
-			message: `${input} is not a MovieId`,
-		});
-	}
+export class InvalidMovieId extends ValidationError {
+	cause: 'Invalid Movie Id';
 }

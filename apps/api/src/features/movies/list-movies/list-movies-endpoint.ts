@@ -1,18 +1,24 @@
-import { Controller, Inject } from '@nestjs/common';
+import { EntityManager, EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { Controller } from '@nestjs/common';
 import { Implement } from '@orpc/nest';
 import { implement } from '@orpc/server';
 import { contract } from '@repo/contract';
-import { DRIZZLE_DB, type DrizzleDb } from '../../../common/infrastructure/database/database.module.js';
-import { moviesTable } from '../../../common/infrastructure/database/schema/movies.schema.js';
+import { Movie } from '../domain/movie.entity.js';
 
 @Controller()
 export class ListMoviesEndpoint {
-	constructor(@Inject(DRIZZLE_DB) private readonly db: DrizzleDb) {}
+	constructor(
+		@InjectRepository(Movie)
+		private readonly movieRepository: EntityRepository<Movie>,
+		private readonly em: EntityManager,
+	) {}
 
 	@Implement(contract.movies.list)
 	list() {
 		return implement(contract.movies.list).handler(async () => {
-			const movies = await this.db.select().from(moviesTable);
+			this.em.findAll(Movie);
+			const movies = await this.movieRepository.findAll();
 			return movies.map((m) => ({ id: m.id, name: m.title }));
 		});
 	}

@@ -7,4 +7,6 @@ const MovieSchema = z.object({
 	name: z.string(),
 });
 
-export const listMoviesContract = oc.meta(openapi({ path: "/movies", method: "GET" })).output(z.array(MovieSchema));
+export const listMoviesContract = oc
+	.meta(openapi({ path: "/movies", method: "GET" }))
+	.output(z.array(MovieSchema));

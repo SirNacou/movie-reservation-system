@@ -1,6 +1,6 @@
-import { TaggedError } from 'better-result';
+import { ErrorFactory } from '@praha/error-factory';
 
-export class InvalidError extends TaggedError('InvalidError')<{
-	input: string;
-	message: string;
-}> {}
+export class ValidationError extends ErrorFactory({
+	name: 'ValidationError',
+	message: 'Invalid input provided',
+}) {}

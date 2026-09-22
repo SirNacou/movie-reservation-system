@@ -1,14 +1,17 @@
 import { NestFactory } from '@nestjs/core';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module.js';
+import env from './env.js';
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule, {
-		bodyParser: false,
-	});
+	const app = await NestFactory.create<NestFastifyApplication>(
+		AppModule,
+		new FastifyAdapter({ logger: env.NODE_ENV !== 'production' }),
+	);
 
 	app.enableShutdownHooks();
 	app.setGlobalPrefix('api');
 
 	await app.listen(4000, '0.0.0.0');
 }
-bootstrap();
+await bootstrap();
