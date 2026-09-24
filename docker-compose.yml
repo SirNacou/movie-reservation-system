@@ -51,21 +51,26 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     init: true
-    command: bun --cwd apps/api start:dev
+    command: bun --cwd apps/api start:debug
     env_file:
       - .env
     ports:
       - "4000:4000"
+      - "9229:9229"
     depends_on:
       postgres:
         condition: service_healthy
       migrator:
-        condition: service_completed_successfully # Waits until migrations succeed
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     develop:
       watch:
         # Rebuild container on dependency updates
         - action: rebuild
           path: package.json
+        - action: rebuild
+          path: bun.lock
         - action: rebuild
           path: apps/api/package.json
         - action: rebuild

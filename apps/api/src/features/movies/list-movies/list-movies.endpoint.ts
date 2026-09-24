@@ -1,4 +1,4 @@
-import { EntityManager, EntityRepository } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Controller } from '@nestjs/common';
 import { Implement } from '@orpc/nest';
@@ -11,13 +11,11 @@ export class ListMoviesEndpoint {
 	constructor(
 		@InjectRepository(Movie)
 		private readonly movieRepository: EntityRepository<Movie>,
-		private readonly em: EntityManager,
 	) {}
 
 	@Implement(contract.movies.list)
-	list() {
+	handle() {
 		return implement(contract.movies.list).handler(async () => {
-			this.em.findAll(Movie);
 			const movies = await this.movieRepository.findAll();
 			return movies.map((m) => ({ id: m.id, name: m.title }));
 		});

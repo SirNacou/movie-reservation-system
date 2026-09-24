@@ -1,7 +1,7 @@
+import { beforeEach, describe, it } from 'node:test';
 import { Test, type TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { beforeEach, describe, it } from 'node:test';
 
 describe('AppController', () => {
 	let appController: AppController;

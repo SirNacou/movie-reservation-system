@@ -1,10 +1,11 @@
 import { defineEntity, p } from '@mikro-orm/core';
-import { Result } from '@praha/byethrow';
+import { R } from '@praha/byethrow';
 import { EmptyMovieTitleError, InvalidMovieDurationError, MovieError } from './errors.js';
 import { MovieId, MovieIdType, newMovieId } from './movie.types.js';
 
 export interface CreateMovieInput {
 	title: string;
+	tmdbId: number;
 	description: string;
 	durationMinutes: number;
 	posterUrl: string;
@@ -12,6 +13,7 @@ export interface CreateMovieInput {
 
 export interface MovieProps {
 	id: MovieId;
+	tmdbId: number;
 	title: string;
 	description: string;
 	durationMinutes: number;
@@ -23,6 +25,7 @@ export const MovieSchema = defineEntity({
 	tableName: 'movies',
 	properties: {
 		id: p.type(MovieIdType).primary(),
+		tmdbId: p.integer(),
 		title: p.string(),
 		description: p.text(),
 		durationMinutes: p.integer(),
@@ -31,7 +34,13 @@ export const MovieSchema = defineEntity({
 });
 
 export class Movie extends MovieSchema.class {
-	public static create({ title, description = '', durationMinutes, posterUrl }: CreateMovieInput) {
+	public static create({
+		tmdbId,
+		title,
+		description = '',
+		durationMinutes,
+		posterUrl,
+	}: CreateMovieInput) {
 		title = title.trim();
 		description = description.trim();
 
@@ -44,16 +53,17 @@ export class Movie extends MovieSchema.class {
 			errors.push(new InvalidMovieDurationError(durationMinutes));
 		}
 
-		if (errors.length > 0) return Result.fail(errors);
+		if (errors.length > 0) return R.fail(errors);
 
 		const movie = new Movie();
 		movie.id = newMovieId();
+		movie.tmdbId = tmdbId;
 		movie.title = title;
 		movie.description = description;
 		movie.durationMinutes = durationMinutes;
 		movie.posterUrl = posterUrl;
 
-		return Result.succeed(movie);
+		return R.succeed(movie);
 	}
 }
 

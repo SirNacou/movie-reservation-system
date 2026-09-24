@@ -10,7 +10,8 @@
 		"includes": [
 			"apps/**/src/**/*.{ts,tsx,js,jsx,json}",
 			"packages/**/src/**/*.{ts,tsx,js,jsx,json}",
-			"*.json"
+			"*.json",
+			"!**/*.gen.ts"
 		]
 	},
 	"formatter": {
@@ -51,9 +52,7 @@
 	},
 	"overrides": [
 		{
-			"includes": [
-				"apps/api/**"
-			],
+			"includes": ["apps/api/**"],
 			"javascript": {
 				"formatter": {
 					"quoteStyle": "single",

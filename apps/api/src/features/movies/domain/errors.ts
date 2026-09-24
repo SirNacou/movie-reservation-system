@@ -1,4 +1,4 @@
-import { ValidationError } from '@/common/domain/errors.js';
+import { HttpError, ValidationError } from '@/common/domain/errors.js';
 
 export type MovieError = EmptyMovieTitleError | InvalidMovieDurationError | InvalidMovieId;
 
@@ -16,4 +16,13 @@ export class InvalidMovieDurationError extends ValidationError {
 
 export class InvalidMovieId extends ValidationError {
 	cause: 'Invalid Movie Id';
+}
+
+export class FailToCallTmdbApi extends HttpError {
+	constructor({ url, status, statusText }: { url: string; status: number; statusText: string }) {
+		super({
+			cause: `TMDB HTTP error ${status}: ${statusText}`,
+			url,
+		});
+	}
 }

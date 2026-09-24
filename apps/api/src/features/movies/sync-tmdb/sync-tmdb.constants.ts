@@ -6,7 +6,7 @@ export const TMDB_JOBS = {
 };
 
 export interface ImportMovieJobPayload {
-	tmdbId: string;
+	tmdbId: number;
 }
 
 export interface SyncPageJobPayload {

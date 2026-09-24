@@ -1,21 +1,25 @@
 {
 	"name": "movie-reservation-system",
 	"private": true,
+	"version": "0.0.1",
 	"scripts": {
-		"build": "turbo run build",
-		"dev": "turbo run dev",
+		"build": "bun --env-file=.env run turbo run build",
+		"dev": "bun --env-file=.env run turbo run dev --env-mode=loose",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint --write .",
 		"format": "biome format --write .",
 		"format:check": "biome format .",
 		"check": "biome check --write .",
-		"check-types": "turbo run check-types"
+		"check-types": "bun --env-file=.env run turbo run check-types",
+		"deps:check": "syncpack lint --specifier-types exact,range",
+		"deps:fix": "syncpack fix-mismatches"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.14",
+		"@biomejs/biome": "2.5.14",
 		"prettier": "3.9.6",
+		"syncpack": "^15.3.3",
 		"turbo": "^2.11.2",
-		"typescript": "7.0.2"
+		"typescript": "6.0.2"
 	},
 	"engines": {
 		"node": ">=24"

@@ -6,9 +6,10 @@
     "builder": {
       "type": "swc",
       "options": {
-        "configPath": ".swcrc"
+        "swcrcPath": ".swcrc"
       }
     },
+    "typeCheck": true,
     "deleteOutDir": true
   }
 }

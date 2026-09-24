@@ -3,7 +3,6 @@ version: "3"
 vars:
   API_DIR: apps/api
   DOCKER_SERVICE: api
-  MIGRATOR_SERVICE: migrator
 
 tasks:
   default:
@@ -12,48 +11,68 @@ tasks:
       - task --list
 
   # ---------------------------------------------------------------------------
-  # Database Migrations (Run inside Docker Compose)
+  # Database Migrations (Run on the host)
   # ---------------------------------------------------------------------------
   migration:create:
     desc: Create a new migration diff
     cmds:
-      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:create -- {{.CLI_ARGS}}
+      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:create -- {{.CLI_ARGS}}
 
   migration:initial:
     desc: Create the initial baseline migration
     cmds:
-      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:create -- --initial
+      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:create -- --initial
 
   migration:blank:
     desc: Create a blank migration file to write custom SQL
     cmds:
-      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd {{.API_DIR}} migration:create -- --blank {{.CLI_ARGS}}
+      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:create -- --blank {{.CLI_ARGS}}
 
   migration:up:
     desc: Run pending migrations
     cmds:
-      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:up
+      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:up
 
   migration:down:
     desc: Roll back last migration
     cmds:
-      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd apps/api migration:down
+      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:down
 
   migration:pending:
     desc: List all pending migrations
     cmds:
-      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd {{.API_DIR}} migration:pending
+      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:pending
 
   migration:fresh:
     desc: Drop database schema and re-run all migrations from scratch
     cmds:
-      - docker compose run --rm {{.MIGRATOR_SERVICE}} bun run --cwd {{.API_DIR}} migration:fresh
+      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:fresh
 
   # ---------------------------------------------------------------------------
-  # Docker / Dev Utilities
+  # Local Development
+  # ---------------------------------------------------------------------------
+  infra:up:
+    desc: Start PostgreSQL and Redis for local development
+    cmds:
+      - docker compose up -d --wait postgres redis
+
+  infra:down:
+    desc: Stop PostgreSQL and Redis
+    cmds:
+      - docker compose stop postgres redis
+
+  dev:
+    desc: Start local API and web apps with Docker-backed infrastructure
+    deps: [infra:up]
+    cmds:
+      - task: migration:up
+      - bun --env-file=.env run dev
+
+  # ---------------------------------------------------------------------------
+  # Docker Utilities
   # ---------------------------------------------------------------------------
   watch:
-    desc: Start all containers in background
+    desc: Start all application and infrastructure containers with watch mode
     cmds:
       - docker compose up --watch --build
 
@@ -82,3 +101,6 @@ tasks:
     interactive: true
     cmds:
       - docker compose exec -it -w /app/{{.API_DIR}} {{.DOCKER_SERVICE}} sh
+
+  contract:build:
+    cmd: bun --cwd packages/contract build
