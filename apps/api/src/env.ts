@@ -1,5 +1,5 @@
-import { defineEnv } from 'envin';
-import { z } from 'zod';
+import { defineEnv } from 'envin'
+import { z } from 'zod'
 
 export const env = defineEnv({
 	server: {
@@ -11,6 +11,6 @@ export const env = defineEnv({
 	},
 	env: process.env,
 	isServer: true,
-});
+})
 
-export type Env = typeof env;
+export type Env = typeof env

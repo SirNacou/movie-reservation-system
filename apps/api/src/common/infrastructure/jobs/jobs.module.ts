@@ -1,7 +1,7 @@
-import { BullModule } from '@nestjs/bullmq';
-import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
-import { env } from '@/env.js';
+import { BullModule } from '@nestjs/bullmq'
+import { Module } from '@nestjs/common'
+import { ScheduleModule } from '@nestjs/schedule'
+import { env } from '@/env.js'
 
 @Module({
 	imports: [

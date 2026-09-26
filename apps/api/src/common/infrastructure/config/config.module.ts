@@ -1,7 +1,7 @@
-import { Global, Module } from '@nestjs/common';
-import { env } from '@/env.js';
+import { Global, Module } from '@nestjs/common'
+import { env } from '@/env.js'
 
-export const ENV_TOKEN = Symbol('ENV_TOKEN');
+export const ENV_TOKEN = Symbol('ENV_TOKEN')
 
 @Global()
 @Module({

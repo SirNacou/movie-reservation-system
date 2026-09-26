@@ -8,7 +8,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
-			"apps/**/src/**/*.{ts,tsx,js,jsx,json}",
+			"apps/**/src/**/*.{ts,tsx,js,jsx,json,svelte}",
 			"packages/**/src/**/*.{ts,tsx,js,jsx,json}",
 			"*.json",
 			"!**/*.gen.ts"
@@ -34,12 +34,19 @@
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double",
-			"semicolons": null,
+			"enabled": true,
+			"quoteStyle": "single",
+			"semicolons": "asNeeded",
 			"trailingCommas": "es5"
 		},
 		"parser": {
 			"unsafeParameterDecoratorsEnabled": true
+		}
+	},
+	"html": {
+		"experimentalFullSupportEnabled": true,
+		"formatter": {
+			"enabled": true
 		}
 	},
 	"assist": {
@@ -56,7 +63,6 @@
 			"javascript": {
 				"formatter": {
 					"quoteStyle": "single",
-					"semicolons": "always",
 					"trailingCommas": "all"
 				}
 			},
@@ -71,6 +77,21 @@
 					},
 					"correctness": {
 						"noUnusedVariables": "warn"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useConst": "off",
+						"useImportType": "off"
+					},
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noUnusedImports": "off"
 					}
 				}
 			}

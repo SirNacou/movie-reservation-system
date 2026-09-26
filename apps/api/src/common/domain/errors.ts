@@ -1,4 +1,4 @@
-import { ErrorFactory } from '@praha/error-factory';
+import { ErrorFactory } from '@praha/error-factory'
 
 export class ValidationError extends ErrorFactory({
 	name: 'ValidationError',

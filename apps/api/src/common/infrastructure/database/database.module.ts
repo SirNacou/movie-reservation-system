@@ -1,6 +1,6 @@
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
-import mikroOrmConfig from '@/mikro-orm.config.js';
+import { MikroOrmModule } from '@mikro-orm/nestjs'
+import { Module } from '@nestjs/common'
+import mikroOrmConfig from '@/mikro-orm.config.js'
 
 @Module({
 	imports: [MikroOrmModule.forRoot(mikroOrmConfig)],

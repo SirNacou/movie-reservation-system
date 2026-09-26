@@ -1,7 +1,7 @@
 // apps/api/src/mikro-orm.config.ts
-import { Migrator } from '@mikro-orm/migrations';
-import { defineConfig } from '@mikro-orm/postgresql';
-import { env } from './env.js';
+import { Migrator } from '@mikro-orm/migrations'
+import { defineConfig } from '@mikro-orm/postgresql'
+import { env } from './env.js'
 
 export default defineConfig({
 	clientUrl: env.DATABASE_URL,
@@ -17,4 +17,4 @@ export default defineConfig({
 		emit: 'ts',
 	},
 	debug: env.NODE_ENV !== 'production',
-});
+})
