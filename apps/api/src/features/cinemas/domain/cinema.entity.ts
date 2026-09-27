@@ -44,13 +44,13 @@ export class Cinema extends CinemaSchema.class {
 			return R.fail(errors)
 		}
 
-		const cinemaVenue = new Cinema()
-		cinemaVenue.id = newCinemaId()
-		cinemaVenue.name = name
-		cinemaVenue.city = city
-		cinemaVenue.address = address
+		const cinema = new Cinema()
+		cinema.id = newCinemaId()
+		cinema.name = name
+		cinema.city = city
+		cinema.address = address
 
-		return cinemaVenue
+		return R.succeed(cinema)
 	}
 }
 

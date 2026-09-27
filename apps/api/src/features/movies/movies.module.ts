@@ -2,9 +2,10 @@ import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { BullModule } from '@nestjs/bullmq'
 import { Module } from '@nestjs/common'
 import { Movie } from './domain/movie.entity.js'
-import { ListMoviesEndpoint } from './list-movies/list-movies.endpoint.js'
+import { ListMoviesHandler } from './list-movies/list-movies.handler.js'
+import { MoviesController } from './movies.controller.js'
 import { TMDB_SYNC_QUEUE } from './sync-tmdb/sync-tmdb.constants.js'
-import { SyncTmdbEndpoint } from './sync-tmdb/sync-tmdb.endpoint.js'
+import { SyncTmdbHandler } from './sync-tmdb/sync-tmdb.handler.js'
 import { SyncTmdbProcessor } from './sync-tmdb/sync-tmdb.processor.js'
 import { SyncTmdbScheduler } from './sync-tmdb/sync-tmdb.scheduler.js'
 
@@ -15,8 +16,8 @@ import { SyncTmdbScheduler } from './sync-tmdb/sync-tmdb.scheduler.js'
 			name: TMDB_SYNC_QUEUE,
 		}),
 	],
-	providers: [SyncTmdbScheduler, SyncTmdbProcessor],
-	controllers: [ListMoviesEndpoint, SyncTmdbEndpoint],
+	providers: [SyncTmdbScheduler, SyncTmdbProcessor, ListMoviesHandler, SyncTmdbHandler],
+	controllers: [MoviesController],
 	exports: [SyncTmdbScheduler],
 })
 export class MoviesModule {}

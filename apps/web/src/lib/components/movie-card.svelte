@@ -1,6 +1,6 @@
 <script lang="ts">
 import * as Card from '@/components/ui/card/index'
-import type { ApiOutputs } from '@/types'
+import type { ApiOutputs } from '@/orpc'
 import { buildTmdbImageUrl } from '@/utils/tmdb'
 
 type Props = {
