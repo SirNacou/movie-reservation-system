@@ -1,4 +1,5 @@
 <script lang="ts">
+import MovieCard from '@/components/movie-card.svelte'
 import PageHeader from '@/components/page-header.svelte'
 import { orpc } from '@/orpc'
 import { createQuery } from '@tanstack/svelte-query'
@@ -8,11 +9,8 @@ const moviesQuery = createQuery(() => orpc.movies.list.queryOptions())
 
 <PageHeader title="Home" />
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
-
-<ul>
-	{#each moviesQuery.data as movie}
-		<li>{movie.name}</li>
+<div class="gap-4 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
+	{#each moviesQuery.data as movie (movie.id)}
+		<MovieCard {movie} />
 	{/each}
-</ul>
+</div>

@@ -17,7 +17,13 @@ export class ListMoviesEndpoint {
 	handle() {
 		return implement(contract.movies.list).handler(async () => {
 			const movies = await this.movieRepository.findAll()
-			return movies.map((m) => ({ id: m.id, name: m.title }))
+			return movies.map((m) => ({
+				id: m.id,
+				title: m.title,
+				description: m.description,
+				duration_Minutes: m.durationMinutes,
+				poster_url: m.posterUrl,
+			}))
 		})
 	}
 }

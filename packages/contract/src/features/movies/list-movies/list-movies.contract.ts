@@ -4,7 +4,10 @@ import { z } from 'zod'
 
 const MovieSchema = z.object({
 	id: z.uuidv7(),
-	name: z.string(),
+	title: z.string(),
+	description: z.string().default(''),
+	poster_url: z.string(),
+	duration_Minutes: z.number().int().gte(0),
 })
 
 export const listMoviesContract = oc

@@ -8,6 +8,7 @@ import { SyncTmdbScheduler } from './sync-tmdb.scheduler.js'
 @Controller()
 export class SyncTmdbEndpoint {
 	constructor(private readonly scheduler: SyncTmdbScheduler) {}
+
 	@Implement(contract.movies.syncTmdb)
 	handle() {
 		return implement(contract.movies.syncTmdb).handler(async ({ input: { page } }) => {
