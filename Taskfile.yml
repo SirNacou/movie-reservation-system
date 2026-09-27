@@ -15,38 +15,45 @@ tasks:
   # ---------------------------------------------------------------------------
   migration:create:
     desc: Create a new migration diff
+    dir: "{{.API_DIR}}"
     cmds:
-      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:create -- {{.CLI_ARGS}}
+      - bun --env-file=../../.env run migration:create -- {{.CLI_ARGS}}
 
   migration:initial:
     desc: Create the initial baseline migration
+    dir: "{{.API_DIR}}"
     cmds:
-      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:create -- --initial
+      - bun --env-file=../../.env run migration:create -- --initial
 
   migration:blank:
     desc: Create a blank migration file to write custom SQL
+    dir: "{{.API_DIR}}"
     cmds:
-      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:create -- --blank {{.CLI_ARGS}}
+      - bun --env-file=../../.env run migration:create -- --blank {{.CLI_ARGS}}
 
   migration:up:
     desc: Run pending migrations
+    dir: "{{.API_DIR}}"
     cmds:
-      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:up
+      - bun --env-file=../../.env run migration:up
 
   migration:down:
     desc: Roll back last migration
+    dir: "{{.API_DIR}}"
     cmds:
-      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:down
+      - bun --env-file=../../.env run migration:down
 
   migration:pending:
     desc: List all pending migrations
+    dir: "{{.API_DIR}}"
     cmds:
-      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:pending
+      - bun --env-file=../../.env run migration:pending
 
   migration:fresh:
     desc: Drop database schema and re-run all migrations from scratch
+    dir: "{{.API_DIR}}"
     cmds:
-      - bun --env-file=../../.env run --cwd {{.API_DIR}} migration:fresh
+      - bun --env-file=../../.env run migration:fresh
 
   # ---------------------------------------------------------------------------
   # Local Development

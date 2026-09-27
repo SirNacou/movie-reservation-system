@@ -1,20 +1,12 @@
+import { baseProperties } from '@/common/domain/base.properties.js'
 import { defineEntity, p } from '@mikro-orm/core'
 import { R } from '@praha/byethrow'
 import { EmptyMovieTitleError, InvalidMovieDurationError, MovieError } from './errors.js'
-import { MovieId, MovieIdType, newMovieId } from './movie.types.js'
+import { MovieIdType, newMovieId } from './movie.types.js'
 
-export interface CreateMovieInput {
+export type CreateMovieInput = {
 	title: string
 	tmdbId: number
-	description: string
-	durationMinutes: number
-	posterUrl: string
-}
-
-export interface MovieProps {
-	id: MovieId
-	tmdbId: number
-	title: string
 	description: string
 	durationMinutes: number
 	posterUrl: string
@@ -30,6 +22,7 @@ export const MovieSchema = defineEntity({
 		description: p.text(),
 		durationMinutes: p.integer(),
 		posterUrl: p.text(),
+		...baseProperties,
 	},
 })
 
