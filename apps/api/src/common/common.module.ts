@@ -7,12 +7,11 @@ import { APP_FILTER } from '@nestjs/core'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ORPCModule } from '@orpc/nest'
 import { AllExceptionsFilter } from './filters/all-exceptions-filter.js'
-import { ConfigModule } from './infrastructure/config/config.module.js'
+import { ENV_TOKEN } from './infrastructure/config/env.config.js'
 
 @Global()
 @Module({
 	imports: [
-		ConfigModule,
 		ScheduleModule.forRoot(),
 		BullModule.forRoot({
 			connection: {
@@ -31,16 +30,18 @@ import { ConfigModule } from './infrastructure/config/config.module.js'
 			},
 		}),
 		ORPCModule.forRoot({}),
-		MikroOrmModule.forRoot({
-			...mikroOrmConfig,
-		}),
+		MikroOrmModule.forRoot(mikroOrmConfig),
 	],
 	providers: [
+		{
+			provide: ENV_TOKEN,
+			useValue: env,
+		},
 		{
 			provide: APP_FILTER,
 			useClass: AllExceptionsFilter,
 		},
 	],
-	exports: [ConfigModule, BullModule, ORPCModule],
+	exports: [BullModule, ORPCModule, ENV_TOKEN],
 })
 export class CommonModule {}

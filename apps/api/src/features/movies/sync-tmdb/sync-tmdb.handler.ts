@@ -1,4 +1,4 @@
-import { ENV_TOKEN } from '@/common/infrastructure/config/config.module.js'
+import { ENV_TOKEN } from '@/common/infrastructure/config/env.config.js'
 import { ApiInputs } from '@/common/infrastructure/orpc.js'
 import type { Env } from '@/env.js'
 import { InjectQueue } from '@nestjs/bullmq'
