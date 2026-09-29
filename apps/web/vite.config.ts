@@ -1,13 +1,16 @@
-import adapter from "@sveltejs/adapter-auto"
-import { sveltekit } from "@sveltejs/kit/vite"
-import tailwindcss from "@tailwindcss/vite"
-import Icons from "unplugin-icons/vite"
-import { defineConfig, loadEnv } from "vite"
+import adapter from "@sveltejs/adapter-auto";
+import { sveltekit } from "@sveltejs/kit/vite";
+import tailwindcss from "@tailwindcss/vite";
+import Icons from "unplugin-icons/vite";
+import { defineConfig, loadEnv } from "vite";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const apiTarget = env.API_URL || "http://localhost:4000";
   return {
+    optimizeDeps: {
+      exclude: ["@repo/contract"],
+    },
     server: {
       host: true,
       port: 3000,

@@ -1,11 +1,11 @@
 <script lang="ts">
-import favicon from '$lib/assets/favicon.svg'
-import AppSidebar from '@/components/app-sidebar.svelte'
-import ThemeToggle from '@/components/theme-toggle.svelte'
-import * as Sidebar from '@/components/ui/sidebar'
 import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query'
 import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools'
 import { ModeWatcher } from 'mode-watcher'
+import AppSidebar from '@/components/app-sidebar.svelte'
+import ThemeToggle from '@/components/theme-toggle.svelte'
+import * as Sidebar from '@/components/ui/sidebar'
+import favicon from '$lib/assets/favicon.svg'
 import '../app.css'
 
 let { children } = $props()

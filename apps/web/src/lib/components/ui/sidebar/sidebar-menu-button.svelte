@@ -26,11 +26,11 @@ export type SidebarMenuButtonSize = VariantProps<typeof sidebarMenuButtonVariant
 </script>
 
 <script lang="ts">
-import * as Tooltip from '$lib/components/ui/tooltip/index.js'
-import { cn, type WithElementRef, type WithoutChildrenOrChild } from '$lib/utils.js'
 import { mergeProps } from 'bits-ui'
 import type { ComponentProps, Snippet } from 'svelte'
 import type { HTMLAttributes } from 'svelte/elements'
+import * as Tooltip from '$lib/components/ui/tooltip/index.js'
+import { cn, type WithElementRef, type WithoutChildrenOrChild } from '$lib/utils.js'
 import { useSidebar } from './context.svelte.js'
 
 let {
@@ -70,7 +70,7 @@ const buttonProps = $derived({
 }: {
 	props?: Record<string, unknown>
 })}
-	{@const mergedProps = mergeProps(buttonProps, props)}
+	{const mergedProps = mergeProps(buttonProps, props)}
 	{#if child}
 		{@render child({ props: mergedProps })}
 	{:else}

@@ -7,13 +7,12 @@ export const ErrorSchema = z.object({
 	error: z.string(),
 })
 
+export const createCinemaRequest = z.object({
+	name: z.string().min(3),
+	city: z.string().min(3),
+	address: z.string().min(5),
+})
 export const createCinemaContract = oc
 	.meta(openapi({ path: '/cinemas', method: 'POST' }))
-	.input(
-		z.object({
-			name: z.string().min(3),
-			city: z.string().min(3),
-			address: z.string().min(5),
-		})
-	)
+	.input(createCinemaRequest)
 	.output(CinemaResponseSchema)

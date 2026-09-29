@@ -1,6 +1,6 @@
 <script lang="ts">
-import * as Sidebar from '$lib/components/ui/sidebar/index.js'
 import type { Component } from 'svelte'
+import * as Sidebar from '$lib/components/ui/sidebar/index.js'
 import HomeIcon from '~icons/akar-icons/home'
 import VenueDuotoneBoldIcon from '~icons/iconmind/venue-duotone-bold'
 

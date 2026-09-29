@@ -1,8 +1,8 @@
 import { baseProperties } from '@/common/domain/base.properties.js'
 import { defineEntity, p } from '@mikro-orm/core'
 import { R } from '@praha/byethrow'
+import { v7 } from 'uuid'
 import { Auditorium } from './auditorium.entity.js'
-import { CinemaIdType, newCinemaId } from './cinema.types.js'
 
 export type CreateCinemaInput = {
 	name: string
@@ -14,7 +14,7 @@ export const CinemaSchema = defineEntity({
 	name: 'Cinema',
 	tableName: 'cinemas',
 	properties: {
-		id: p.type(CinemaIdType).primary(),
+		id: p.uuid().primary(),
 		name: p.string().length(255),
 		city: p.string().length(100),
 		address: p.text(),
@@ -45,7 +45,7 @@ export class Cinema extends CinemaSchema.class {
 		}
 
 		const cinema = new Cinema()
-		cinema.id = newCinemaId()
+		cinema.id = v7()
 		cinema.name = name
 		cinema.city = city
 		cinema.address = address

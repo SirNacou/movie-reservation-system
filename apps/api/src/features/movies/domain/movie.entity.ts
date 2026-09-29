@@ -1,8 +1,8 @@
 import { baseProperties } from '@/common/domain/base.properties.js'
 import { defineEntity, p } from '@mikro-orm/core'
 import { R } from '@praha/byethrow'
+import { v7 } from 'uuid'
 import { EmptyMovieTitleError, InvalidMovieDurationError, MovieError } from './errors.js'
-import { MovieIdType, newMovieId } from './movie.types.js'
 
 export type CreateMovieInput = {
 	title: string
@@ -16,7 +16,7 @@ export const MovieSchema = defineEntity({
 	name: 'Movie',
 	tableName: 'movies',
 	properties: {
-		id: p.type(MovieIdType).primary(),
+		id: p.uuid().primary(),
 		tmdbId: p.integer(),
 		title: p.string(),
 		description: p.text(),
@@ -49,7 +49,7 @@ export class Movie extends MovieSchema.class {
 		if (errors.length > 0) return R.fail(errors)
 
 		const movie = new Movie()
-		movie.id = newMovieId()
+		movie.id = v7()
 		movie.tmdbId = tmdbId
 		movie.title = title
 		movie.description = description

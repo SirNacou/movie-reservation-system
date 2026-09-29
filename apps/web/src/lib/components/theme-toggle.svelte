@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button/index.js'
 import { toggleMode } from 'mode-watcher'
+import { Button } from '$lib/components/ui/button/index.js'
 import MoonIcon from '~icons/lucide/moon'
 import SunIcon from '~icons/lucide/sun'
 </script>

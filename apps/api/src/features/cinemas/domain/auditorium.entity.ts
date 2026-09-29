@@ -1,15 +1,15 @@
 import { baseProperties } from '@/common/domain/base.properties.js'
 import { defineEntity, p } from '@mikro-orm/core'
 import { R } from '@praha/byethrow'
+import { v7 } from 'uuid'
 import { Cinema } from './cinema.entity.js'
-import { AuditoriumIdType, newAuditoriumId } from './cinema.types.js'
 import { Seat } from './seat.entity.js'
 
 export const AuditoriumSchema = defineEntity({
 	name: 'Auditorium',
 	tableName: 'auditoriums',
 	properties: {
-		id: p.type(AuditoriumIdType).primary(),
+		id: p.uuid().primary(),
 		cinema: () => p.manyToOne(Cinema),
 		name: p.string().length(100), // e.g. "Screen 1 - IMAX"
 		totalSeats: p.integer().default(0),
@@ -26,7 +26,7 @@ export class Auditorium extends AuditoriumSchema.class {
 		}
 
 		const hall = new Auditorium()
-		hall.id = newAuditoriumId()
+		hall.id = v7()
 		hall.cinema = props.cinema
 		hall.name = trimmedName
 		hall.totalSeats = 0

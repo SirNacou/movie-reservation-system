@@ -19,6 +19,7 @@
     "@orpc/tanstack-query": "2.0.0-beta.40",
     "@repo/contract": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/svelte-form": "^1.33.5",
     "@tanstack/svelte-query": "^6.3.0",
     "@tanstack/svelte-query-devtools": "^6.3.0",
     "envin": "^1.3.0",

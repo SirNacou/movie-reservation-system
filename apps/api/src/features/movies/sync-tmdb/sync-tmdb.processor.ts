@@ -1,11 +1,11 @@
-import { ENV_TOKEN } from '@/common/infrastructure/config/env.config.js'
-import { type Env } from '@/env.js'
 import { EntityManager } from '@mikro-orm/core'
 import { CreateRequestContext } from '@mikro-orm/decorators/legacy'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
-import { Inject, Logger } from '@nestjs/common'
+import { Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Result } from '@praha/byethrow'
 import { Job } from 'bullmq'
+import { type Environment } from '@/common/infrastructure/config/env.config.js'
 import { FailToCallTmdbApi } from '../domain/errors.js'
 import { Movie } from '../domain/movie.entity.js'
 import { TMDB_JOBS, TMDB_SYNC_QUEUE } from './sync-tmdb.constants.js'
@@ -22,8 +22,7 @@ export class SyncTmdbProcessor extends WorkerHost {
 
 	constructor(
 		private readonly em: EntityManager,
-		@Inject(ENV_TOKEN)
-		private readonly envConfig: Env,
+		private readonly config: ConfigService<Environment, true>,
 	) {
 		super()
 	}
@@ -46,7 +45,7 @@ export class SyncTmdbProcessor extends WorkerHost {
 	}
 
 	private async importMovie(tmdbId: number) {
-		const apiKey = this.envConfig.TMDB_API_KEY
+		const apiKey = this.config.getOrThrow('TMDB_API_KEY')
 		const url = `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${apiKey}`
 		const res = await fetch(url, {
 			headers: {
@@ -60,7 +59,11 @@ export class SyncTmdbProcessor extends WorkerHost {
 				return
 			}
 			return Result.fail(
-				new FailToCallTmdbApi({ url, status: res.status, statusText: res.statusText }),
+				new FailToCallTmdbApi({
+					url,
+					status: res.status,
+					statusText: res.statusText,
+				}),
 			)
 		}
 

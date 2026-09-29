@@ -1,7 +1,7 @@
 <script lang="ts">
+import type { ComponentProps } from 'svelte'
 import { Button } from '$lib/components/ui/button/index.js'
 import { cn } from '$lib/utils.js'
-import type { ComponentProps } from 'svelte'
 import SidebarIcon from '~icons/lucide/sidebar'
 import { useSidebar } from './context.svelte.js'
 

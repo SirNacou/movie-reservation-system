@@ -1,20 +1,6 @@
-// apps/api/src/mikro-orm.config.ts
-import { Migrator } from '@mikro-orm/migrations'
-import { defineConfig } from '@mikro-orm/postgresql'
-import { env } from './env.js'
+import { type Environment, validateEnvironment } from './common/infrastructure/config/env.config.js'
+import { createMikroOrmOptions } from './common/infrastructure/config/mikro-orm.options.js'
 
-export default defineConfig({
-	clientUrl: env.DATABASE_URL,
-	entities: ['./dist/**/*.entity.js'],
-	entitiesTs: ['./src/**/*.entity.ts'],
-	extensions: [Migrator],
-	migrations: {
-		path: './dist/common/infrastructure/database/migrations',
-		pathTs: './src/common/infrastructure/database/migrations',
-		tableName: 'mikro_orm_migrations',
-		transactional: true,
-		allOrNothing: true,
-		emit: 'ts',
-	},
-	debug: env.NODE_ENV !== 'production',
-})
+const env: Pick<Environment, 'DATABASE_URL' | 'NODE_ENV'> = validateEnvironment(process.env)
+
+export default createMikroOrmOptions(env)

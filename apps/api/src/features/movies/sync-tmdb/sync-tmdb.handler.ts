@@ -1,10 +1,10 @@
-import { ENV_TOKEN } from '@/common/infrastructure/config/env.config.js'
-import { ApiInputs } from '@/common/infrastructure/orpc.js'
-import type { Env } from '@/env.js'
 import { InjectQueue } from '@nestjs/bullmq'
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Result } from '@praha/byethrow'
 import { BulkJobOptions, Queue } from 'bullmq'
+import type { Environment } from '@/common/infrastructure/config/env.config.js'
+import { ApiInputs } from '@/common/infrastructure/orpc.js'
 import { FailToCallTmdbApi } from '../domain/errors.js'
 import { ImportMovieJobPayload, TMDB_JOBS, TMDB_SYNC_QUEUE } from './sync-tmdb.constants.js'
 
@@ -16,13 +16,12 @@ type Props = {
 export class SyncTmdbHandler {
 	private readonly logger = new Logger(SyncTmdbHandler.name)
 	constructor(
-		@Inject(ENV_TOKEN)
-		private readonly envConfig: Env,
+		private readonly config: ConfigService<Environment, true>,
 		@InjectQueue(TMDB_SYNC_QUEUE)
 		private readonly queue: Queue,
 	) {}
 	async handle({ req }: Props) {
-		const apiKey = this.envConfig.TMDB_API_KEY
+		const apiKey = this.config.getOrThrow('TMDB_API_KEY')
 		const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}&page=${req.page}`
 		const options = {
 			method: 'GET',
@@ -35,7 +34,11 @@ export class SyncTmdbHandler {
 		if (!res.ok) {
 			this.logger.error(`failed to call the api: ${url}, error: ${res}`)
 			return Result.fail(
-				new FailToCallTmdbApi({ url, status: res.status, statusText: res.statusText }),
+				new FailToCallTmdbApi({
+					url,
+					status: res.status,
+					statusText: res.statusText,
+				}),
 			)
 		}
 

@@ -1,8 +1,8 @@
 <script lang="ts">
+import { createQuery } from '@tanstack/svelte-query'
 import MovieCard from '@/components/movie-card.svelte'
 import PageHeader from '@/components/page-header.svelte'
 import { orpc } from '@/orpc'
-import { createQuery } from '@tanstack/svelte-query'
 
 const moviesQuery = createQuery(() => orpc.movies.list.queryOptions())
 </script>
