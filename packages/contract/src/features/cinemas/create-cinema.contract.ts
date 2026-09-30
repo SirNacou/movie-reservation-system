@@ -1,7 +1,7 @@
 import { oc } from '@orpc/contract'
 import { openapi } from '@orpc/openapi'
 import { z } from 'zod'
-import { CinemaResponseSchema } from './list.contract.js'
+import { CinemaResponseSchema } from './list-cinemas.contract.js'
 
 export const ErrorSchema = z.object({
 	error: z.string(),

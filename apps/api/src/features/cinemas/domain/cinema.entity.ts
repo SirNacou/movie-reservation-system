@@ -18,7 +18,7 @@ export const CinemaSchema = defineEntity({
 		name: p.string().length(255),
 		city: p.string().length(100),
 		address: p.text(),
-		auditorium: () => p.oneToMany(Auditorium).mappedBy('cinema').ref(),
+		auditoriums: () => p.oneToMany(Auditorium).mappedBy('cinema').ref(),
 		...baseProperties,
 	},
 })
