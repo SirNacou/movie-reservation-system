@@ -52,6 +52,34 @@ export class Cinema extends CinemaSchema.class {
 
 		return R.succeed(cinema)
 	}
+
+	update({ name, city, address }: Partial<CreateCinemaInput>) {
+		if (name !== undefined) {
+			name = name.trim()
+			if (name === '') {
+				return R.fail(new Error("Name can't be empty"))
+			}
+			this.name = name
+		}
+
+		if (city !== undefined) {
+			city = city.trim()
+			if (city === '') {
+				return R.fail(new Error("City can't be empty"))
+			}
+			this.city = city
+		}
+
+		if (address !== undefined) {
+			address = address.trim()
+			if (address === '') {
+				return R.fail(new Error("Address can't be empty"))
+			}
+			this.address = address
+		}
+
+		return R.succeed(this)
+	}
 }
 
 CinemaSchema.setClass(Cinema)

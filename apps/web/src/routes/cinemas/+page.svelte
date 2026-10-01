@@ -1,4 +1,6 @@
 <script lang="ts">
+import { goto } from '$app/navigation'
+import { resolve } from '$app/paths'
 import type { RouteId } from '$app/types'
 import PageHeader from '@/components/page-header.svelte'
 import Button from '@/components/ui/button/button.svelte'
@@ -40,7 +42,12 @@ const deleteCinema = createMutation(() =>
 				<Table.Cell>{cinema.city}</Table.Cell>
 				<Table.Cell>{cinema.address}</Table.Cell>
 				<Table.Cell>
-					<Button onclick={() => deleteCinema.mutate({id: cinema.id})}>Delete</Button>
+					<Button onclick={() => goto(resolve('/cinemas/[slug]', { slug: cinema.id }))}>
+						Detail
+					</Button>
+					<Button variant="destructive" onclick={() => deleteCinema.mutate({ id: cinema.id })}>
+						Delete
+					</Button>
 				</Table.Cell>
 			</Table.Row>
 		{/each}

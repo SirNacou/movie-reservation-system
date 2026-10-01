@@ -1,8 +1,8 @@
-import { InjectRepository } from '@mikro-orm/nestjs'
+import { ApiInputs, ApiOutputs } from '@/common/infrastructure/orpc.js'
 import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { R } from '@praha/byethrow'
-import { ApiInputs, ApiOutputs } from '@/common/infrastructure/orpc.js'
 import { Cinema } from '../domain/cinema.entity.js'
 
 type Props = {
@@ -22,9 +22,24 @@ export class UpdateCinemaHandler {
 			return R.fail(new Error('Cinema not found'))
 		}
 
-		if (req.name !== undefined) cinema.name = req.name
-		if (req.city !== undefined) cinema.city = req.city
-		if (req.address !== undefined) cinema.address = req.address
+		const updateResult = cinema.update({
+			name: req.name,
+			city: req.city,
+			address: req.address,
+		})
+
+		if (R.isFailure(updateResult)) {
+			return updateResult
+		}
+
+		this.cinemasRepository.nativeUpdate(
+			{
+				id: req.id,
+			},
+			{
+				...updateResult.value,
+			},
+		)
 
 		await this.cinemasRepository.getEntityManager().flush()
 
