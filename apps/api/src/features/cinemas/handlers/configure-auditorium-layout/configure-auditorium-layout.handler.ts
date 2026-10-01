@@ -2,8 +2,8 @@ import { ApiInputs, ApiOutputs } from '@/common/infrastructure/orpc.js'
 import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { R } from '@praha/byethrow'
-import { Auditorium } from '../domain/auditorium.entity.js'
-import { Seat } from '../domain/seat.entity.js'
+import { Auditorium } from '../../domain/auditorium.entity.js'
+import { Seat } from '../../domain/seat.entity.js'
 
 type Props = {
 	req: ApiInputs['cinemas']['configureLayout']

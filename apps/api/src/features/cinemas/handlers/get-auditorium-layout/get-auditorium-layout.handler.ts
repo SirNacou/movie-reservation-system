@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { R } from '@praha/byethrow'
 import { ApiInputs, ApiOutputs } from '@/common/infrastructure/orpc.js'
-import { Auditorium } from '../domain/auditorium.entity.js'
+import { Auditorium } from '../../domain/auditorium.entity.js'
 
 type Props = {
 	req: ApiInputs['cinemas']['getLayout']

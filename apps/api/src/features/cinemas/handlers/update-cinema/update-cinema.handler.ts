@@ -3,7 +3,7 @@ import { EntityRepository } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { R } from '@praha/byethrow'
-import { Cinema } from '../domain/cinema.entity.js'
+import { Cinema } from '../../domain/cinema.entity.js'
 
 type Props = {
 	req: ApiInputs['cinemas']['update']
