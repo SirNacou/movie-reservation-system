@@ -61,6 +61,7 @@ const form = createForm(() => ({
 						<Input
 							value={field.state.value}
 							oninput={(e) => field.handleChange(e.currentTarget.value)}
+							onblur={field.handleBlur}
 						/>
 					</Field.Field>
 				{/snippet}

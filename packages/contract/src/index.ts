@@ -9,6 +9,8 @@ import { updateCinemaContract } from './features/cinemas/update-cinema.contract.
 import { listMoviesContract } from './features/movies/list.contract.js'
 import { syncTmdbContract } from './features/movies/sync-tmdb.contract.js'
 
+export { SeatTypeSchema } from './features/cinemas/configure-auditorium-layout.contract.js'
+
 export const contract = {
 	movies: {
 		list: listMoviesContract,
@@ -27,4 +29,5 @@ export const contract = {
 }
 
 export type Contract = typeof contract
+export * from './features/cinemas/configure-auditorium-layout.contract.js'
 export * from './features/cinemas/create-cinema.contract.js'

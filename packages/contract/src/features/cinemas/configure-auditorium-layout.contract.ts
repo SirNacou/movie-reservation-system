@@ -5,7 +5,7 @@ import { z } from 'zod'
 export const SeatTypeSchema = z.enum(['REGULAR', 'VIP', 'COUPLE', 'ACCESSIBLE'])
 
 export const SeatDefinitionSchema = z.object({
-	row: z.string().trim().min(1).max(5),
+	row: z.string().trim().min(1).max(20),
 	number: z.number().int().positive(),
 	type: SeatTypeSchema.default('REGULAR'),
 })

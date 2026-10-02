@@ -1,27 +1,15 @@
 <script lang="ts">
+import { resolve } from '$app/paths'
 import { page } from '$app/state'
 import type { RouteId } from '$app/types'
 import PageHeader from '@/components/page-header.svelte'
 import Button from '@/components/ui/button/button.svelte'
 import { orpc } from '@/orpc'
-import { createMutation, createQuery } from '@tanstack/svelte-query'
-import AddAuditoriumDialog from '../../../features/cinemas/add-auditorium-dialog.svelte'
+import { createQuery } from '@tanstack/svelte-query'
+import AddAuditoriumDialog from '../../../lib/features/cinemas/add-auditorium-dialog.svelte'
 
 const cinemaQuery = createQuery(() =>
-	orpc.cinemas.get.queryOptions({ input: { id: page.params.slug! } })
-)
-
-let isAddingAuditorium = $state(false)
-let newAuditoriumName = $state('')
-
-const createAuditorium = createMutation(() =>
-	orpc.cinemas.createAuditorium.mutationOptions({
-		onSuccess: async () => {
-			newAuditoriumName = ''
-			isAddingAuditorium = false
-			await cinemaQuery.refetch()
-		},
-	})
+	orpc.cinemas.get.queryOptions({ input: { id: page.params.cinemaId! } })
 )
 
 const formatDate = (date: Date | string) => {
@@ -67,7 +55,10 @@ const formatDate = (date: Date | string) => {
 					<h2 id="auditoriums-heading" class="font-semibold text-xl">Auditoriums</h2>
 					<p class="text-muted-foreground text-sm">Rooms and seating capacity at this cinema.</p>
 				</div>
-				<AddAuditoriumDialog cinemaId={page.params.slug!} onSuccess={() => cinemaQuery.refetch()} />
+				<AddAuditoriumDialog
+					cinemaId={page.params.cinemaId!}
+					onSuccess={() => cinemaQuery.refetch()}
+				/>
 			</div>
 
 			{#if cinemaQuery.data.auditoriums.length > 0}
@@ -76,9 +67,19 @@ const formatDate = (date: Date | string) => {
 						<li class="flex justify-between items-center gap-4 p-4">
 							<div>
 								<h3 class="font-medium">{auditorium.name}</h3>
-								<p class="text-muted-foreground text-sm">Auditorium</p>
+								<p class="text-muted-foreground text-sm">{auditorium.totalSeats} seats</p>
 							</div>
-							<p class="text-sm shrink-0">{auditorium.totalSeats} seats</p>
+
+							<Button
+								variant="outline"
+								size="sm"
+								href={resolve('/cinemas/[cinemaId]/auditoriums/[auditoriumId]/layout', {
+	cinemaId: page.params.cinemaId!,
+	auditoriumId: auditorium.id,
+})}
+							>
+								Configure seats
+							</Button>
 						</li>
 					{/each}
 				</ul>
