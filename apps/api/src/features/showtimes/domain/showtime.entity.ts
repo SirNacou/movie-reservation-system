@@ -17,8 +17,8 @@ export const ShowtimeSchema = defineEntity({
 	tableName: 'showtimes',
 	properties: {
 		id: p.uuid().primary(),
-		movie: () => p.manyToOne(() => Movie),
-		auditorium: () => p.manyToOne(() => Auditorium),
+		movie: () => p.manyToOne(Movie),
+		auditorium: () => p.manyToOne(Auditorium),
 		startTime: p.datetime(),
 		endTime: p.datetime(),
 		...baseProperties,

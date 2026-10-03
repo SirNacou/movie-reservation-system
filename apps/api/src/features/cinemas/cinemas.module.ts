@@ -9,6 +9,7 @@ import { CreateAuditoriumHandler } from './handlers/create-auditorium/create-aud
 import { CreateCinemaHandler } from './handlers/create-cinema/create-cinema.handler.js'
 import { GetAuditoriumLayoutHandler } from './handlers/get-auditorium-layout/get-auditorium-layout.handler.js'
 import { GetCinemaHandler } from './handlers/get-cinema/get-cinema.handler.js'
+import { ListAuditoriumsHandler } from './handlers/list-auditoriums/list-auditoriums.handler.js'
 import { ListCinemasHandler } from './handlers/list-cinemas/list-cinemas.handler.js'
 import { RemoveCinemaHandler } from './handlers/remove-cinema/remove-cinema.handler.js'
 import { UpdateCinemaHandler } from './handlers/update-cinema/update-cinema.handler.js'
@@ -25,6 +26,7 @@ import { UpdateCinemaHandler } from './handlers/update-cinema/update-cinema.hand
 		CreateAuditoriumHandler,
 		ConfigureAuditoriumLayoutHandler,
 		GetAuditoriumLayoutHandler,
+		ListAuditoriumsHandler,
 	],
 	exports: [],
 })

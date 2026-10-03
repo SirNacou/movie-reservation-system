@@ -4,6 +4,7 @@ import { createCinemaContract } from './features/cinemas/create-cinema.contract.
 import { deleteCinemaContract } from './features/cinemas/delete-cinema.contract.js'
 import { getAuditoriumLayoutContract } from './features/cinemas/get-auditorium-layout.contract.js'
 import { getCinemaContract } from './features/cinemas/get-cinema.contract.js'
+import { listAuditoriumsContract } from './features/cinemas/list-auditoriums.contract.js'
 import { listCinemasContract } from './features/cinemas/list-cinemas.contract.js'
 import { updateCinemaContract } from './features/cinemas/update-cinema.contract.js'
 import { listMoviesContract } from './features/movies/list.contract.js'
@@ -30,6 +31,7 @@ export const contract = {
 		createAuditorium: createAuditoriumContract,
 		configureLayout: configureAuditoriumLayoutContract,
 		getLayout: getAuditoriumLayoutContract,
+		listAuditoriums: listAuditoriumsContract,
 	},
 	showtimes: {
 		schedule: scheduleShowtimeContract,

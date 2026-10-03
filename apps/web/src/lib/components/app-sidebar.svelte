@@ -1,8 +1,10 @@
 <script lang="ts">
-import type { Component } from 'svelte'
+import type { RouteId } from '$app/types'
 import * as Sidebar from '$lib/components/ui/sidebar/index.js'
+import type { Component } from 'svelte'
 import HomeIcon from '~icons/akar-icons/home'
 import VenueDuotoneBoldIcon from '~icons/iconmind/venue-duotone-bold'
+import FilmMovieProjectorIcon from '~icons/pinhead/film-movie-projector'
 
 type NavGroup = {
 	name: string
@@ -11,7 +13,7 @@ type NavGroup = {
 
 type NavItem = {
 	title: string
-	href: string
+	href: RouteId
 	icon: Component
 }
 
@@ -28,6 +30,11 @@ const groups: NavGroup[] = [
 				title: 'Cinemas',
 				href: '/cinemas',
 				icon: VenueDuotoneBoldIcon,
+			},
+			{
+				title: 'Showtimes',
+				href: '/showtimes',
+				icon: FilmMovieProjectorIcon,
 			},
 		],
 	},

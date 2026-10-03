@@ -8,6 +8,7 @@ import { CreateAuditoriumHandler } from './handlers/create-auditorium/create-aud
 import { CreateCinemaHandler } from './handlers/create-cinema/create-cinema.handler.js'
 import { GetAuditoriumLayoutHandler } from './handlers/get-auditorium-layout/get-auditorium-layout.handler.js'
 import { GetCinemaHandler } from './handlers/get-cinema/get-cinema.handler.js'
+import { ListAuditoriumsHandler } from './handlers/list-auditoriums/list-auditoriums.handler.js'
 import { ListCinemasHandler } from './handlers/list-cinemas/list-cinemas.handler.js'
 import { RemoveCinemaHandler } from './handlers/remove-cinema/remove-cinema.handler.js'
 import { UpdateCinemaHandler } from './handlers/update-cinema/update-cinema.handler.js'
@@ -23,6 +24,7 @@ export class CinemasController {
 		private readonly createAuditoriumHandler: CreateAuditoriumHandler,
 		private readonly configureAuditoriumLayoutHandler: ConfigureAuditoriumLayoutHandler,
 		private readonly getAuditoriumLayoutHandler: GetAuditoriumLayoutHandler,
+		private readonly listAuditoriumsHandler: ListAuditoriumsHandler,
 	) {}
 
 	@Implement(contract.cinemas)
@@ -70,6 +72,14 @@ export class CinemasController {
 				const res = await this.createAuditoriumHandler.handle({ req: input })
 				if (R.isFailure(res)) {
 					throw new ORPCError('BAD_REQUEST', { message: res.error.message })
+				}
+
+				return res.value
+			}),
+			listAuditoriums: implement(contract.cinemas.listAuditoriums).handler(async ({ input }) => {
+				const res = await this.listAuditoriumsHandler.handle(input)
+				if (R.isFailure(res)) {
+					throw new ORPCError('BAD_REQUEST', { message: res.error })
 				}
 
 				return res.value
