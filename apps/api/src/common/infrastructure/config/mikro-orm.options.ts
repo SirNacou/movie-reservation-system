@@ -1,5 +1,5 @@
 import { Migrator } from '@mikro-orm/migrations'
-import { defineConfig } from '@mikro-orm/postgresql'
+import { defineConfig, PostgreSqlDriver } from '@mikro-orm/postgresql'
 import type { Environment } from './env.config.js'
 
 type MikroOrmEnvironment = Pick<Environment, 'DATABASE_URL' | 'NODE_ENV'>
@@ -7,6 +7,7 @@ type MikroOrmEnvironment = Pick<Environment, 'DATABASE_URL' | 'NODE_ENV'>
 export function createMikroOrmOptions(env: MikroOrmEnvironment) {
 	return defineConfig({
 		clientUrl: env.DATABASE_URL,
+		driver: PostgreSqlDriver,
 		entities: ['./dist/**/*.entity.js'],
 		entitiesTs: ['./src/**/*.entity.ts'],
 		extensions: [Migrator],

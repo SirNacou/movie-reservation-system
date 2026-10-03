@@ -1,5 +1,8 @@
 <script lang="ts">
+import { goto } from '$app/navigation'
+import { resolve } from '$app/paths'
 import { page } from '$app/state'
+import { Button } from '@/components/ui/button'
 import {
 	type GridRow,
 	type GridSeat,
@@ -8,8 +11,9 @@ import {
 } from '@/features/cinemas/auditorium'
 import AuditoriumConfigCard from '@/features/cinemas/auditorium-config-card.svelte'
 import AuditoriumLayoutCard from '@/features/cinemas/auditorium-layout-card.svelte'
-import { orpc } from '@/orpc'
-import { createQuery } from '@tanstack/svelte-query'
+import { type ApiInputs, orpc } from '@/orpc'
+import { createMutation, createQuery } from '@tanstack/svelte-query'
+import { toast } from 'svelte-sonner'
 
 const DEFAULT_ROWS = 8
 const DEFAULT_SEATS_PER_ROW = 12
@@ -38,6 +42,17 @@ function createGrid(rows: number, seatsPerRow: number): GridRow[] {
 		})),
 	}))
 }
+
+const configureLayout = createMutation(() =>
+	orpc.cinemas.configureLayout.mutationOptions({
+		onSuccess: () => {
+			toast.success('Configure succeed')
+		},
+		onError: (error) => {
+			toast.error(error.message)
+		},
+	})
+)
 
 $effect(() => {
 	if (initialized || !getAuditorium.isSuccess) {
@@ -76,23 +91,55 @@ function handleSeatSelected(seat: GridSeat) {
 		),
 	}))
 }
+
+function handleCancel() {
+	goto(resolve('/cinemas/[cinemaId]', { cinemaId: page.params.cinemaId! }))
+}
+
+async function handleSubmit() {
+	const auditoriumId = page.params.auditoriumId!
+
+	await configureLayout.mutateAsync({
+		auditoriumId,
+		seats: gridRows.flatMap((row) =>
+			row.seats.map(
+				(seat) =>
+					({
+						row: row.label,
+						number: seat.number,
+						type: seat.type,
+					}) as ApiInputs['cinemas']['configureLayout']['seats'][number]
+			)
+		),
+	})
+}
 </script>
 
-<div class="flex gap-3">
-	<AuditoriumConfigCard
-		rootClass="flex-1"
-		{rows}
-		{seatsPerRow}
-		dimensionsChanged={handleDimensionsChanged}
-		bind:selectedSeatType
-	/>
+<div class="flex flex-col gap-4">
+	<div class="flex gap-3">
+		<AuditoriumConfigCard
+			rootClass="flex-1"
+			{rows}
+			{seatsPerRow}
+			bind:selectedSeatType
+			dimensionsChanged={handleDimensionsChanged}
+		/>
 
-	<AuditoriumLayoutCard
-		rootClass="flex-3"
-		title="Auditorium Layout"
-		description="Preview and configure the layout of the auditorium."
-		rows={gridRows}
-		seatSelected={handleSeatSelected}
-		{selectedSeatType}
-	/>
+		<AuditoriumLayoutCard
+			rootClass="flex-3"
+			title="Auditorium Layout"
+			description="Preview and configure the layout of the auditorium."
+			rows={gridRows}
+			{selectedSeatType}
+			seatSelected={handleSeatSelected}
+		/>
+	</div>
+
+	<div class="pt-4 border-t">
+		<div class="flex justify-end items-center gap-3">
+			<Button variant="ghost" onclick={handleCancel}> Cancel </Button>
+
+			<Button size="lg" onclick={handleSubmit}> Save Layout </Button>
+		</div>
+	</div>
 </div>

@@ -1,11 +1,12 @@
+import { createMikroOrmOptions } from '@/common/infrastructure/config/mikro-orm.options.js'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
+import { PostgreSqlDriver } from '@mikro-orm/postgresql'
 import { BullModule } from '@nestjs/bullmq'
 import { Global, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER } from '@nestjs/core'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ORPCModule } from '@orpc/nest'
-import { createMikroOrmOptions } from '@/common/infrastructure/config/mikro-orm.options.js'
 import { AllExceptionsFilter } from './filters/all-exceptions-filter.js'
 import { type Environment, validateEnvironment } from './infrastructure/config/env.config.js'
 
@@ -39,6 +40,7 @@ import { type Environment, validateEnvironment } from './infrastructure/config/e
 		ORPCModule.forRoot({}),
 		MikroOrmModule.forRootAsync({
 			inject: [ConfigService],
+			driver: PostgreSqlDriver,
 			useFactory: (config: ConfigService<Environment, true>) =>
 				createMikroOrmOptions({
 					DATABASE_URL: config.getOrThrow('DATABASE_URL'),
