@@ -33,7 +33,7 @@ const groups: NavGroup[] = [
 			},
 			{
 				title: 'Showtimes',
-				href: '/showtimes',
+				href: '/admin/showtimes',
 				icon: FilmMovieProjectorIcon,
 			},
 		],

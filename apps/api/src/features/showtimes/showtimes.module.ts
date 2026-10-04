@@ -3,6 +3,7 @@ import { CancelShowtimeHandler } from './handlers/cancel-showtime/cancel-showtim
 import { GetShowtimeHandler } from './handlers/get-showtime/get-showtime.handler.js'
 import { ListShowtimesByAuditoriumHandler } from './handlers/list-showtimes-by-auditorium/list-showtimes-by-auditorium.handler.js'
 import { ListShowtimesByMovieHandler } from './handlers/list-showtimes-by-movie/list-showtimes-by-movie.handler.js'
+import { ListShowtimesHandler } from './handlers/list-showtimes/list-showtimes.handler.js'
 import { ScheduleShowtimeHandler } from './handlers/schedule-showtime/schedule-showtime.handler.js'
 import { ShowtimesController } from './showtimes.controller.js'
 
@@ -10,6 +11,7 @@ import { ShowtimesController } from './showtimes.controller.js'
 	providers: [
 		ScheduleShowtimeHandler,
 		GetShowtimeHandler,
+		ListShowtimesHandler,
 		ListShowtimesByMovieHandler,
 		ListShowtimesByAuditoriumHandler,
 		CancelShowtimeHandler,

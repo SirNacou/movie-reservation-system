@@ -13,10 +13,12 @@
     "lint:fix": "oxlint --fix"
   },
   "dependencies": {
-    "@orpc/client": "2.0.0-beta.41",
-    "@orpc/contract": "2.0.0-beta.41",
-    "@orpc/openapi": "2.0.0-beta.41",
-    "@orpc/tanstack-query": "2.0.0-beta.41",
+    "@orpc/client": "2.0.0-beta.42",
+    "@orpc/contract": "2.0.0-beta.42",
+    "@orpc/json-schema": "^2.0.0-beta.42",
+    "@orpc/openapi": "2.0.0-beta.42",
+    "@orpc/tanstack-query": "2.0.0-beta.42",
+    "@orpc/zod": "^2.0.0-beta.42",
     "@repo/contract": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/svelte-form": "^1.33.5",

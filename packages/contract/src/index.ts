@@ -13,6 +13,7 @@ import { cancelShowtimeContract } from './features/showtimes/cancel-showtime.con
 import { getShowtimeContract } from './features/showtimes/get-showtime.contract.js'
 import { listShowtimesByAuditoriumContract } from './features/showtimes/list-showtimes-by-auditorium.contract.js'
 import { listShowtimesByMovieContract } from './features/showtimes/list-showtimes-by-movie.contract.js'
+import { listShowtimesContract } from './features/showtimes/list-showtimes.contract.js'
 import { scheduleShowtimeContract } from './features/showtimes/schedule-showtime.contract.js'
 
 export { SeatTypeSchema } from './features/cinemas/configure-auditorium-layout.contract.js'
@@ -36,6 +37,7 @@ export const contract = {
 	showtimes: {
 		schedule: scheduleShowtimeContract,
 		get: getShowtimeContract,
+		list: listShowtimesContract,
 		listByMovie: listShowtimesByMovieContract,
 		listByAuditorium: listShowtimesByAuditoriumContract,
 		cancel: cancelShowtimeContract,
