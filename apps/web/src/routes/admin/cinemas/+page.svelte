@@ -42,7 +42,9 @@ const deleteCinema = createMutation(() =>
 				<Table.Cell>{cinema.city}</Table.Cell>
 				<Table.Cell>{cinema.address}</Table.Cell>
 				<Table.Cell>
-					<Button onclick={() => goto(resolve('/cinemas/[cinemaId]', { cinemaId: cinema.id }))}>
+					<Button
+						onclick={() => goto(resolve('/admin/cinemas/[cinemaId]', { cinemaId: cinema.id }))}
+					>
 						Detail
 					</Button>
 					<Button variant="destructive" onclick={() => deleteCinema.mutate({ id: cinema.id })}>

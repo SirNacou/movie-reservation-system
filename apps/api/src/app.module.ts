@@ -5,10 +5,11 @@ import { CommonModule } from './common/common.module.js'
 import { AllExceptionsFilter } from './common/filters/all-exceptions-filter.js'
 import { CinemasModule } from './features/cinemas/cinemas.module.js'
 import { MoviesModule } from './features/movies/movies.module.js'
+import { ReservationsModule } from './features/reservations/reservations.module.js'
 import { ShowtimesModule } from './features/showtimes/showtimes.module.js'
 
 @Module({
-	imports: [CommonModule, MoviesModule, CinemasModule, ShowtimesModule],
+	imports: [CommonModule, MoviesModule, CinemasModule, ShowtimesModule, ReservationsModule],
 	controllers: [AppController],
 	providers: [AllExceptionsFilter, AppService],
 })

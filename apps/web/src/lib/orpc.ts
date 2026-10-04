@@ -1,3 +1,5 @@
+import { browser } from '$app/environment'
+import { env } from '$env/dynamic/public'
 import { createORPCClient } from '@orpc/client'
 import type {
 	InferContractRouterInputs,
@@ -12,6 +14,7 @@ import { type Contract, contract } from '@repo/contract'
 
 const link = new OpenAPILink(contract, {
 	url: '/api',
+	...(browser ? {} : { origin: env.PUBLIC_API_URL }),
 	plugins: [
 		new SmartCoercionLinkPlugin(contract, {
 			converters: [new ZodToJsonSchemaConverter()],

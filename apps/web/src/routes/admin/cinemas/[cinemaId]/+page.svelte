@@ -6,7 +6,7 @@ import PageHeader from '@/components/page-header.svelte'
 import Button from '@/components/ui/button/button.svelte'
 import { orpc } from '@/orpc'
 import { createQuery } from '@tanstack/svelte-query'
-import AddAuditoriumDialog from '../../../lib/features/cinemas/add-auditorium-dialog.svelte'
+import AddAuditoriumDialog from '../../../../lib/features/cinemas/add-auditorium-dialog.svelte'
 
 const cinemaQuery = createQuery(() =>
 	orpc.cinemas.get.queryOptions({ input: { id: page.params.cinemaId! } })
@@ -73,7 +73,7 @@ const formatDate = (date: Date | string) => {
 							<Button
 								variant="outline"
 								size="sm"
-								href={resolve('/cinemas/[cinemaId]/auditoriums/[auditoriumId]/layout', {
+								href={resolve('/admin/cinemas/[cinemaId]/auditoriums/[auditoriumId]/layout', {
 	cinemaId: page.params.cinemaId!,
 	auditoriumId: auditorium.id,
 })}

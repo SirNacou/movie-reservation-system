@@ -93,7 +93,7 @@ function handleSeatSelected(seat: GridSeat) {
 }
 
 function handleCancel() {
-	goto(resolve('/cinemas/[cinemaId]', { cinemaId: page.params.cinemaId! }))
+	goto(resolve('/admin/cinemas/[cinemaId]', { cinemaId: page.params.cinemaId! }))
 }
 
 async function handleSubmit() {

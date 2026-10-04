@@ -1,9 +1,10 @@
 <script lang="ts">
+import { goto } from '$app/navigation'
+import { resolve } from '$app/paths'
 import PageHeader from '@/components/page-header.svelte'
 import Button from '@/components/ui/button/button.svelte'
 import * as Field from '@/components/ui/field'
 import Input from '@/components/ui/input/input.svelte'
-import { safeGoto } from '@/navigation'
 import { type ApiInputs, orpc } from '@/orpc'
 import { createCinemaRequest } from '@repo/contract'
 import { createForm, formOptions } from '@tanstack/svelte-form'
@@ -12,7 +13,7 @@ import { createMutation } from '@tanstack/svelte-query'
 const createCinema = createMutation(() =>
 	orpc.cinemas.create.mutationOptions({
 		onSuccess: async () => {
-			await safeGoto('/cinemas')
+			await goto(resolve('/admin/cinemas'))
 		},
 	})
 )
@@ -126,7 +127,7 @@ const form = createForm(() => ({
 							type="button"
 							variant="outline"
 							disabled={isSubmitting}
-							onclick={() => safeGoto('/cinemas')}
+							onclick={() => goto(resolve('/admin/cinemas'))}
 						>
 							Cancel
 						</Button>

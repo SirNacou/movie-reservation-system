@@ -27,14 +27,24 @@ const groups: NavGroup[] = [
 				icon: HomeIcon,
 			},
 			{
-				title: 'Cinemas',
-				href: '/cinemas',
-				icon: VenueDuotoneBoldIcon,
+				title: 'Showtimes',
+				href: '/showtimes',
+				icon: FilmMovieProjectorIcon,
 			},
+		],
+	},
+	{
+		name: 'Management',
+		items: [
 			{
 				title: 'Showtimes',
 				href: '/admin/showtimes',
 				icon: FilmMovieProjectorIcon,
+			},
+			{
+				title: 'Cinemas',
+				href: '/admin/cinemas',
+				icon: VenueDuotoneBoldIcon,
 			},
 		],
 	},
@@ -47,6 +57,7 @@ const groups: NavGroup[] = [
 }: NavGroup)}
 	<Sidebar.Group>
 		<Sidebar.GroupLabel>{name}</Sidebar.GroupLabel>
+
 		<Sidebar.GroupContent>
 			<Sidebar.Menu>
 				{#each items as item (item.title)}
@@ -73,15 +84,17 @@ const groups: NavGroup[] = [
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton size="lg">
-					<span class="font-bold text-lg uppercase">Movie Reservation</span>
+					<span class="font-bold text-lg uppercase"> Movie Reservation </span>
 				</Sidebar.MenuButton>
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
 	</Sidebar.Header>
+
 	<Sidebar.Content>
 		{#each groups as group}
 			{@render navGroup(group)}
 		{/each}
 	</Sidebar.Content>
+
 	<Sidebar.Footer />
 </Sidebar.Root>
