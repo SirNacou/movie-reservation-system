@@ -8,6 +8,7 @@ import { CancelReservationHandler } from './handlers/cancel-reservation.handler.
 import { ConfirmReservationHandler } from './handlers/confirm-reservation.handler.js'
 import { CreateReservationHandler } from './handlers/create-reservation.handler.js'
 import { GetReservationHandler } from './handlers/get-reservation.handler.js'
+import { ListReservationsHandler } from './handlers/list-reservations.handler.js'
 import { ListShowtimeSeatsHandler } from './handlers/list-showtime-seats.handler.js'
 
 @Controller()
@@ -15,6 +16,7 @@ export class ReservationsController {
 	constructor(
 		private readonly createReservationHandler: CreateReservationHandler,
 		private readonly getReservationHandler: GetReservationHandler,
+		private readonly listReservationsHandler: ListReservationsHandler,
 		private readonly listShowtimeSeatsHandler: ListShowtimeSeatsHandler,
 		private readonly confirmReservationHandler: ConfirmReservationHandler,
 		private readonly cancelReservationHandler: CancelReservationHandler,
@@ -38,6 +40,15 @@ export class ReservationsController {
 				}
 
 				return res.value
+			}),
+			list: implement(contract.reservations.list).handler(async ({ input }) => {
+				const res = await this.listReservationsHandler.handle(input)
+
+				if (R.isFailure(res)) {
+					throw res.error
+				}
+
+				return res.value.map(toReservationListOutput)
 			}),
 			listShowtimeSeats: implement(contract.reservations.listShowtimeSeats).handler(
 				async ({ input }) => {
@@ -77,6 +88,30 @@ function toReservationOutput(reservation: Reservation) {
 	return {
 		id: reservation.id,
 		showtimeId: reservation.showtime.id,
+		customerEmail: reservation.customerEmail,
+		customerName: reservation.customerName ?? null,
+		status: reservation.status,
+		expiresAt: reservation.expiresAt,
+		seats: reservation.seats.getItems().map((reservationSeat) => ({
+			id: reservationSeat.id,
+			seatId: reservationSeat.seat.id,
+			row: reservationSeat.seat.row,
+			number: reservationSeat.seat.number,
+		})),
+		createdAt: reservation.createdAt,
+		updatedAt: reservation.updatedAt,
+	}
+}
+
+function toReservationListOutput(reservation: Reservation) {
+	return {
+		id: reservation.id,
+		showtimeId: reservation.showtime.id,
+		movieTitle: reservation.showtime.movie.title,
+		cinemaName: reservation.showtime.auditorium.cinema.name,
+		auditoriumName: reservation.showtime.auditorium.name,
+		startTime: reservation.showtime.startTime,
+		endTime: reservation.showtime.endTime,
 		customerEmail: reservation.customerEmail,
 		customerName: reservation.customerName ?? null,
 		status: reservation.status,

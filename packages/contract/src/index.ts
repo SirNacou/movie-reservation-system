@@ -14,6 +14,7 @@ import { confirmReservationContract } from './features/reservations/confirm.cont
 import { createReservationContract } from './features/reservations/create-reservation.contract.js'
 import { getReservationContract } from './features/reservations/get.contract.js'
 import { listShowtimeSeatsContract } from './features/reservations/list-showtime-seats.contract.js'
+import { listReservationsContract } from './features/reservations/list.contract.js'
 import { cancelShowtimeContract } from './features/showtimes/cancel-showtime.contract.js'
 import { getShowtimeContract } from './features/showtimes/get-showtime.contract.js'
 import { listShowtimesByAuditoriumContract } from './features/showtimes/list-showtimes-by-auditorium.contract.js'
@@ -50,6 +51,7 @@ export const contract = {
 	reservations: {
 		create: createReservationContract,
 		get: getReservationContract,
+		list: listReservationsContract,
 		listShowtimeSeats: listShowtimeSeatsContract,
 		confirm: confirmReservationContract,
 		cancel: cancelReservationContract,

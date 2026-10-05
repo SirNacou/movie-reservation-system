@@ -9,31 +9,36 @@ export class ListShowtimesHandler {
 	constructor(private readonly em: EntityManager) {}
 
 	async handle(input: ApiInputs['showtimes']['list']) {
-		const filter: FilterQuery<NoInfer<Showtime>> = {}
-
-		if (input.movieId) {
-			filter.movie = input.movieId
+		const where: FilterQuery<Showtime> = {
+			...(input.movieId && { movie: input.movieId }),
+			...(input.cinemaId && { auditorium: { cinema: input.cinemaId } }),
+			...((input.from || input.to) && {
+				startTime: {
+					...(input.from && { $gte: input.from }),
+					...(input.to && { $lt: input.to }),
+				},
+			}),
 		}
 
-		if (input.cinemaId) {
-			filter.auditorium = {
-				cinema: input.cinemaId,
-			}
-		}
-
-		if (input.date) {
-			const startOfDay = new Date(input.date)
-			startOfDay.setHours(0, 0, 0, 0)
-
-			const endOfDay = new Date(input.date)
-			endOfDay.setHours(23, 59, 59, 999)
-
-			filter.startTime = { $gte: startOfDay, $lte: endOfDay }
-		}
-
-		const showtimes = await this.em.find(Showtime, filter, {
-			populate: ['movie', 'auditorium', 'auditorium.cinema'],
+		const showtimes = await this.em.find(Showtime, where, {
+			// Only select the columns the response needs
+			fields: [
+				'id',
+				'startTime',
+				'endTime',
+				'movie.id',
+				'movie.title',
+				'movie.durationMinutes',
+				'auditorium.id',
+				'auditorium.name',
+				'auditorium.cinema.id',
+				'auditorium.cinema.name',
+			],
+			// One query with JOINs instead of one query per relation level
+			strategy: 'joined',
 			orderBy: { startTime: 'ASC' },
+			// Read-only endpoint: skip identity map / change tracking overhead
+			disableIdentityMap: true,
 		})
 
 		return R.succeed(

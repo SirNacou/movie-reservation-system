@@ -5,7 +5,8 @@ import { z } from 'zod'
 export const ListShowtimesInputSchema = z.object({
 	cinemaId: z.uuid('Invalid cinema ID').optional(),
 	movieId: z.uuid('Invalid movie ID').optional(),
-	date: z.date().optional(),
+	from: z.date().optional(),
+	to: z.date().optional(),
 })
 
 export const ShowtimeTableItemSchema = z.object({
