@@ -117,12 +117,8 @@ export class Reservation extends ReservationSchema.class {
 	 * Cancels a pending or confirmed reservation.
 	 */
 	cancel(now: Date = new Date()): R.Result<undefined, Error> {
-		if (this.status === ReservationStatus.CANCELLED) {
-			return R.fail(new Error('Reservation is already cancelled'))
-		}
-
-		if (this.status === ReservationStatus.CONFIRMED) {
-			return R.fail(new Error('Reservation is already confirmed'))
+		if (this.status !== ReservationStatus.PENDING && this.status !== ReservationStatus.CONFIRMED) {
+			return R.fail(new Error(`Cannot cancel a reservation with status "${this.status}"`))
 		}
 
 		if (this.showtime.startTime <= now) {
@@ -130,7 +126,6 @@ export class Reservation extends ReservationSchema.class {
 		}
 
 		this.status = ReservationStatus.CANCELLED
-
 		return R.succeed(undefined)
 	}
 

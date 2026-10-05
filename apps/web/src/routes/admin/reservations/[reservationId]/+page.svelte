@@ -3,6 +3,7 @@
   import { page } from "$app/state";
   import Button from "@/components/ui/button/button.svelte";
   import * as Card from "@/components/ui/card";
+  import * as Dialog from "@/components/ui/dialog";
   import Separator from "@/components/ui/separator/separator.svelte";
   import { orpc } from "@/orpc";
   import { formatDate, formatTime } from "@/utils/date-format";
@@ -167,15 +168,59 @@
           <Separator />
 
           <div class="flex justify-end">
-            <Button
-              variant="destructive"
-              disabled={cancelReservation.isPending}
-              onclick={cancel}
-            >
-              {cancelReservation.isPending
-                ? "Cancelling..."
-                : "Cancel Reservation"}
-            </Button>
+            <Dialog.Root>
+              <Dialog.Trigger>
+                <Button variant="destructive">Cancel Reservation</Button>
+              </Dialog.Trigger>
+
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>Cancel Reservation?</Dialog.Title>
+
+                  <Dialog.Description>
+                    Are you sure you want to cancel this reservation? This
+                    action cannot be undone.
+                  </Dialog.Description>
+                </Dialog.Header>
+
+                <div class="space-y-2 py-4 text-sm">
+                  <div>
+                    <span class="text-muted-foreground">Movie:</span>
+                    {data.movieTitle}
+                  </div>
+
+                  <div>
+                    <span class="text-muted-foreground">Date:</span>
+                    {formatDate(data.startTime)}
+                    ·
+                    {formatTime(data.startTime)}
+                  </div>
+
+                  <div>
+                    <span class="text-muted-foreground">Seats:</span>
+                    {data.seats
+                      .map((seat) => `${seat.row}${seat.number}`)
+                      .join(", ")}
+                  </div>
+                </div>
+
+                <Dialog.Footer>
+                  <Dialog.Close>
+                    <Button variant="outline">Keep Reservation</Button>
+                  </Dialog.Close>
+
+                  <Button
+                    variant="destructive"
+                    disabled={cancelReservation.isPending}
+                    onclick={cancel}
+                  >
+                    {cancelReservation.isPending
+                      ? "Cancelling..."
+                      : "Cancel Reservation"}
+                  </Button>
+                </Dialog.Footer>
+              </Dialog.Content>
+            </Dialog.Root>
           </div>
         {/if}
       </Card.Content>
