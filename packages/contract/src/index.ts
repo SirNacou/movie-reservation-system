@@ -9,6 +9,7 @@ import { listCinemasContract } from './features/cinemas/list-cinemas.contract.js
 import { updateCinemaContract } from './features/cinemas/update-cinema.contract.js'
 import { listMoviesContract } from './features/movies/list.contract.js'
 import { syncTmdbContract } from './features/movies/sync-tmdb.contract.js'
+import { listAdminReservationsContract } from './features/reservations/admin-list.contract.js'
 import { cancelReservationContract } from './features/reservations/cancel.contract.js'
 import { confirmReservationContract } from './features/reservations/confirm.contract.js'
 import { createReservationContract } from './features/reservations/create-reservation.contract.js'
@@ -55,6 +56,7 @@ export const contract = {
 		listShowtimeSeats: listShowtimeSeatsContract,
 		confirm: confirmReservationContract,
 		cancel: cancelReservationContract,
+		adminList: listAdminReservationsContract,
 	},
 }
 

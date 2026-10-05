@@ -52,6 +52,11 @@
 					href: "/admin/cinemas",
 					icon: VenueDuotoneBoldIcon,
 				},
+				{
+					title: "Reservations",
+					href: "/admin/reservations",
+					icon: TicketIcon,
+				},
 			],
 		},
 	];

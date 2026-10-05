@@ -12,7 +12,16 @@ export class GetReservationHandler {
 		const reservation = await this.em.findOne(
 			Reservation,
 			{ id: input.reservationId },
-			{ populate: ['showtime', 'seats', 'seats.seat'] },
+			{
+				populate: [
+					'showtime',
+					'showtime.movie',
+					'showtime.auditorium',
+					'showtime.auditorium.cinema',
+					'seats',
+					'seats.seat',
+				],
+			},
 		)
 
 		if (!reservation) {
@@ -22,6 +31,11 @@ export class GetReservationHandler {
 		return R.succeed({
 			id: reservation.id,
 			showtimeId: reservation.showtime.id,
+			movieTitle: reservation.showtime.movie.title,
+			cinemaName: reservation.showtime.auditorium.cinema.name,
+			auditoriumName: reservation.showtime.auditorium.name,
+			startTime: reservation.showtime.startTime,
+			endTime: reservation.showtime.endTime,
 			customerEmail: reservation.customerEmail,
 			customerName: reservation.customerName ?? null,
 			status: reservation.status,

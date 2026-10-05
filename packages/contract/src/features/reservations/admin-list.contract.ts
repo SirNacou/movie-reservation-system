@@ -6,10 +6,13 @@ import {
 	ReservationStatusSchema,
 } from './create-reservation.contract.js'
 
-export const GetReservationInputSchema = z.object({
-	reservationId: z.uuid('Invalid reservation ID'),
+export const ListAdminReservationsInputSchema = z.object({
+	customerEmail: z.email('Invalid customer email').optional(),
+	status: ReservationStatusSchema.optional(),
+	showtimeId: z.uuid('Invalid showtime ID').optional(),
 })
-export const ReservationDetailOutputSchema = z.object({
+
+export const ListAdminReservationOutputSchema = z.object({
 	id: z.uuid(),
 	showtimeId: z.uuid(),
 	movieTitle: z.string(),
@@ -26,13 +29,15 @@ export const ReservationDetailOutputSchema = z.object({
 	updatedAt: z.date(),
 })
 
-export const getReservationContract = oc
+export const ListAdminReservationsOutputSchema = z.array(ListAdminReservationOutputSchema)
+
+export const listAdminReservationsContract = oc
 	.meta(
 		openapi({
 			method: 'GET',
-			path: '/reservations/{reservationId}',
-			summary: 'Get a reservation',
+			path: '/admin/reservations',
+			summary: 'List reservations for administration',
 		})
 	)
-	.input(GetReservationInputSchema)
-	.output(ReservationDetailOutputSchema)
+	.input(ListAdminReservationsInputSchema)
+	.output(ListAdminReservationsOutputSchema)

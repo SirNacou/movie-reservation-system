@@ -7,11 +7,20 @@ export const formatDateTime = (value: Date) => {
 	}).format(new Date(value))
 }
 
-export const formatTime = (value: Date) => {
+export function formatDate(date: Date) {
 	return new Intl.DateTimeFormat('en-US', {
-		hour: '2-digit',
+		weekday: 'short',
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric',
+	}).format(date)
+}
+
+export function formatTime(date: Date) {
+	return new Intl.DateTimeFormat('en-US', {
+		hour: 'numeric',
 		minute: '2-digit',
-	}).format(new Date(value))
+	}).format(date)
 }
 
 export const formatDuration = (minutes: number) => {

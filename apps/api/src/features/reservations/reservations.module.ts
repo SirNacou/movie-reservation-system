@@ -3,6 +3,7 @@ import { CancelReservationHandler } from './handlers/cancel-reservation.handler.
 import { ConfirmReservationHandler } from './handlers/confirm-reservation.handler.js'
 import { CreateReservationHandler } from './handlers/create-reservation.handler.js'
 import { GetReservationHandler } from './handlers/get-reservation.handler.js'
+import { ListAdminReservationsHandler } from './handlers/list-admin-reservations.handler.js'
 import { ListReservationsHandler } from './handlers/list-reservations.handler.js'
 import { ListShowtimeSeatsHandler } from './handlers/list-showtime-seats.handler.js'
 import { ExpireReservationsJob } from './jobs/expire-reservations.job.js'
@@ -17,6 +18,7 @@ import { ReservationsController } from './reservations.controller.js'
 		ConfirmReservationHandler,
 		CancelReservationHandler,
 		ExpireReservationsJob,
+		ListAdminReservationsHandler,
 	],
 	controllers: [ReservationsController],
 })
