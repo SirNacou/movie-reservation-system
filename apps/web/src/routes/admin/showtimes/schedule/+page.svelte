@@ -1,17 +1,18 @@
 <script lang="ts">
-import { goto } from '$app/navigation'
-import Button from '@/components/ui/button/button.svelte'
-import * as Card from '@/components/ui/card'
-import DateTimePicker from '@/components/ui/date-time-picker/date-time-picker.svelte'
-import * as Field from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import * as Select from '@/components/ui/select'
-import Separator from '@/components/ui/separator/separator.svelte'
-import { orpc } from '@/orpc'
-import { createForm } from '@tanstack/svelte-form'
-import { createMutation, createQuery } from '@tanstack/svelte-query'
-import { toast } from 'svelte-sonner'
-import z from 'zod'
+import { goto } from '$app/navigation';
+import Button from '@/components/ui/button/button.svelte';
+import * as Card from '@/components/ui/card';
+import DateTimePicker from '@/components/ui/date-time-picker/date-time-picker.svelte';
+import * as Field from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import * as Select from '@/components/ui/select';
+import Separator from '@/components/ui/separator/separator.svelte';
+import { orpc } from '@/orpc';
+import { getApiErrorMessage } from '@/utils/api-error';
+import { createForm } from '@tanstack/svelte-form';
+import { createMutation, createQuery } from '@tanstack/svelte-query';
+import { toast } from 'svelte-sonner';
+import z from 'zod';
 
 const form = createForm(() => ({
 	defaultValues: {
@@ -63,7 +64,7 @@ const scheduleShowtime = createMutation(() =>
 			goto('/admin/showtimes')
 		},
 		onError: (error) => {
-			toast.error(error.message)
+			toast.error(getApiErrorMessage(error))
 		},
 	})
 )

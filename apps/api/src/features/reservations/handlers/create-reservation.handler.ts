@@ -4,9 +4,9 @@ import { Showtime } from '@/features/showtimes/domain/showtime.entity.js'
 import { EntityManager, LockMode } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { R } from '@praha/byethrow'
-import { ReservationSeat } from '../../domain/reservation-seat.entity.js'
-import { Reservation } from '../../domain/reservation.entity.js'
-import { ReservationStatus } from '../../domain/reservation.types.js'
+import { ReservationSeat } from '../domain/reservation-seat.entity.js'
+import { Reservation } from '../domain/reservation.entity.js'
+import { ReservationStatus } from '../domain/reservation.types.js'
 
 @Injectable()
 export class CreateReservationHandler {

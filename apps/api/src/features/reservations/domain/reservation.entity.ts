@@ -121,8 +121,26 @@ export class Reservation extends ReservationSchema.class {
 			return R.fail(new Error('Reservation is already cancelled'))
 		}
 
+		if (this.status === ReservationStatus.CONFIRMED) {
+			return R.fail(new Error('Reservation is already confirmed'))
+		}
+
 		if (this.showtime.startTime <= now) {
 			return R.fail(new Error('Cannot cancel a reservation for a screening that has already begun'))
+		}
+
+		this.status = ReservationStatus.CANCELLED
+
+		return R.succeed(undefined)
+	}
+
+	expire(now: Date = new Date()) {
+		if (this.status !== ReservationStatus.PENDING) {
+			return R.fail(new Error(`Cannot expire a reservation with status "${this.status}"`))
+		}
+
+		if (now < this.expiresAt) {
+			return R.fail(new Error('Reservation hold has not expired'))
 		}
 
 		this.status = ReservationStatus.CANCELLED

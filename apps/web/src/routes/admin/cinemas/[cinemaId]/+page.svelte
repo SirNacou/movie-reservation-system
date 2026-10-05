@@ -1,12 +1,13 @@
 <script lang="ts">
-import { resolve } from '$app/paths'
-import { page } from '$app/state'
-import type { RouteId } from '$app/types'
-import PageHeader from '@/components/page-header.svelte'
-import Button from '@/components/ui/button/button.svelte'
-import { orpc } from '@/orpc'
-import { createQuery } from '@tanstack/svelte-query'
-import AddAuditoriumDialog from '../../../../lib/features/cinemas/add-auditorium-dialog.svelte'
+import { resolve } from '$app/paths';
+import { page } from '$app/state';
+import type { RouteId } from '$app/types';
+import PageHeader from '@/components/page-header.svelte';
+import Button from '@/components/ui/button/button.svelte';
+import { orpc } from '@/orpc';
+import { getApiErrorMessage } from '@/utils/api-error';
+import { createQuery } from '@tanstack/svelte-query';
+import AddAuditoriumDialog from '../../../../lib/features/cinemas/add-auditorium-dialog.svelte';
 
 const cinemaQuery = createQuery(() =>
 	orpc.cinemas.get.queryOptions({ input: { id: page.params.cinemaId! } })
@@ -28,7 +29,7 @@ const formatDate = (date: Date | string) => {
 	<p class="text-muted-foreground" role="status">Loading cinema details…</p>
 {:else if cinemaQuery.isError}
 	<div class="space-y-3" role="alert">
-		<p>Unable to load this cinema: {cinemaQuery.error.message}</p>
+		<p>Unable to load this cinema: {getApiErrorMessage(cinemaQuery.error)}</p>
 		<Button variant="outline" onclick={() => cinemaQuery.refetch()}>Try again</Button>
 	</div>
 {:else if cinemaQuery.data}

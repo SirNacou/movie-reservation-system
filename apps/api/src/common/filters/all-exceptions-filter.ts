@@ -8,12 +8,42 @@ import {
 } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
 
+type ErrorRecord = Record<string, unknown>
+
+function isErrorRecord(value: unknown): value is ErrorRecord {
+	return typeof value === 'object' && value !== null
+}
+
+function getErrorDetails(response: unknown, status: number) {
+	const record = isErrorRecord(response) ? response : undefined
+	const nestedError = isErrorRecord(record?.error) ? record.error : undefined
+	const messageValue = nestedError?.message ?? record?.message ?? response
+	const message = Array.isArray(messageValue)
+		? messageValue.map(String).join('; ')
+		: typeof messageValue === 'string'
+			? messageValue
+			: (HttpStatus[status] ?? 'Request failed')
+
+	const details = nestedError?.details ?? nestedError?.data ?? record?.details ?? record?.data
+
+	return {
+		code:
+			typeof nestedError?.code === 'string'
+				? nestedError.code
+				: typeof record?.code === 'string'
+					? record.code
+					: (HttpStatus[status] ?? 'UNKNOWN_ERROR'),
+		message,
+		...(details === undefined ? {} : { details }),
+	}
+}
+
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
 	private readonly logger = new Logger(AllExceptionsFilter.name)
 	constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
-	catch(exception: HttpException, host: ArgumentsHost) {
+	catch(exception: unknown, host: ArgumentsHost) {
 		const { httpAdapter } = this.httpAdapterHost
 		const ctx = host.switchToHttp()
 
@@ -25,10 +55,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 			statusCode: httpStatus,
 			timestamp: new Date().toISOString(),
 			path: httpAdapter.getRequestUrl(ctx.getRequest()),
-			error:
-				typeof errorResponse === 'object' && errorResponse !== null
-					? errorResponse
-					: { message: errorResponse },
+			error: getErrorDetails(errorResponse, httpStatus),
 		}
 
 		if (httpStatus !== HttpStatus.INTERNAL_SERVER_ERROR) {
