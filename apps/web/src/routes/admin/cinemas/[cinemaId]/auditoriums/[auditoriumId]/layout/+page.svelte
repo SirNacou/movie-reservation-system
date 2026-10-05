@@ -1,19 +1,20 @@
 <script lang="ts">
-import { goto } from '$app/navigation'
-import { resolve } from '$app/paths'
-import { page } from '$app/state'
-import { Button } from '@/components/ui/button'
+import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
+import { page } from '$app/state';
+import { Button } from '@/components/ui/button';
 import {
-	type GridRow,
-	type GridSeat,
-	type SeatType,
-	toGridRows,
-} from '@/features/cinemas/auditorium'
-import AuditoriumConfigCard from '@/features/cinemas/auditorium-config-card.svelte'
-import AuditoriumLayoutCard from '@/features/cinemas/auditorium-layout-card.svelte'
-import { type ApiInputs, orpc } from '@/orpc'
-import { createMutation, createQuery } from '@tanstack/svelte-query'
-import { toast } from 'svelte-sonner'
+    type GridRow,
+    type GridSeat,
+    type SeatType,
+    toGridRows,
+} from '@/features/cinemas/auditorium';
+import AuditoriumConfigCard from '@/features/cinemas/auditorium-config-card.svelte';
+import AuditoriumLayoutCard from '@/features/cinemas/auditorium-layout-card.svelte';
+import { type ApiInputs, orpc } from '@/orpc';
+import { getApiErrorMessage } from '@/utils/api-error';
+import { createMutation, createQuery } from '@tanstack/svelte-query';
+import { toast } from 'svelte-sonner';
 
 const DEFAULT_ROWS = 8
 const DEFAULT_SEATS_PER_ROW = 12
@@ -49,7 +50,7 @@ const configureLayout = createMutation(() =>
 			toast.success('Configure succeed')
 		},
 		onError: (error) => {
-			toast.error(error.message)
+			toast.error(getApiErrorMessage(error))
 		},
 	})
 )

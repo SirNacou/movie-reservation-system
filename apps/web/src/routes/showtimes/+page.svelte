@@ -1,11 +1,11 @@
 <script lang="ts">
-import { goto } from '$app/navigation'
-import Button from '@/components/ui/button/button.svelte'
-import * as Card from '@/components/ui/card'
-import Input from '@/components/ui/input/input.svelte'
-import { orpc } from '@/orpc'
-import { formatTime } from '@/utils/date-format'
-import { createQuery } from '@tanstack/svelte-query'
+import { goto } from '$app/navigation';
+import Button from '@/components/ui/button/button.svelte';
+import * as Card from '@/components/ui/card';
+import Input from '@/components/ui/input/input.svelte';
+import { orpc } from '@/orpc';
+import { formatTime } from '@/utils/date-format';
+import { createQuery } from '@tanstack/svelte-query';
 
 let selectedDate = $state(new Date().toISOString().slice(0, 10))
 
@@ -80,7 +80,8 @@ const movies = $derived(
 							{#each movie.showtimes as showtime (showtime.id)}
 								<Button
 									variant="outline"
-									class="flex-col gap-0.5 py-3 min-w-24 h-auto"
+									type="button"
+									class="flex-col gap-1 p-5 border-2 min-w-24 h-auto"
 									onclick={() => goto(`/showtimes/${showtime.id}`)}
 								>
 									<span class="font-semibold">

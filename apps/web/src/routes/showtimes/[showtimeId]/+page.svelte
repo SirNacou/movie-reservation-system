@@ -1,21 +1,21 @@
 <script lang="ts">
-import { page } from '$app/state'
-import Button from '@/components/ui/button/button.svelte'
-import * as Card from '@/components/ui/card'
-import Input from '@/components/ui/input/input.svelte'
-import Label from '@/components/ui/label/label.svelte'
-import Separator from '@/components/ui/separator/separator.svelte'
-import { orpc } from '@/orpc'
-import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query'
-import { toast } from 'svelte-sonner'
+    import { goto } from '$app/navigation';
+    import { page } from '$app/state';
+    import Button from '@/components/ui/button/button.svelte';
+    import * as Card from '@/components/ui/card';
+    import Input from '@/components/ui/input/input.svelte';
+    import Label from '@/components/ui/label/label.svelte';
+    import Separator from '@/components/ui/separator/separator.svelte';
+    import { orpc } from '@/orpc';
+    import { getApiErrorMessage } from '@/utils/api-error';
+    import { createMutation, createQuery } from '@tanstack/svelte-query';
+    import { toast } from 'svelte-sonner';
 
 const showtimeId = page.params.showtimeId!
 
 let customerName = $state('')
 let customerEmail = $state('')
 let selectedSeatIds = $state<string[]>([])
-
-const queryClient = useQueryClient()
 
 const seats = createQuery(() =>
 	orpc.reservations.listShowtimeSeats.queryOptions({
@@ -48,20 +48,10 @@ function seatClass(seat: Seat) {
 
 const createReservation = createMutation(() =>
 	orpc.reservations.create.mutationOptions({
-		onSuccess: async () => {
-			selectedSeatIds = []
-			customerName = ''
-			customerEmail = ''
-
-			await queryClient.invalidateQueries({
-				queryKey: orpc.reservations.listShowtimeSeats.queryKey({
-					input: {
-						showtimeId,
-					},
-				}),
-			})
+		onSuccess: async (reservation) => {
+			await goto(`/reservations/${reservation.id}`)
 		},
-		onError: (error) => toast.error(error.message),
+		onError: (error) => toast.error(getApiErrorMessage(error)),
 	})
 )
 
@@ -207,7 +197,7 @@ function reserve() {
 
 				{#if createReservation.isError}
 					<p class="text-destructive text-sm">
-						{createReservation.error.message}
+						{getApiErrorMessage(createReservation.error)}
 					</p>
 				{/if}
 			</Card.Content>

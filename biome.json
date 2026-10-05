@@ -8,7 +8,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
-			"apps/**/src/**/*.{ts,tsx,js,jsx,json,svelte}",
+			"apps/**/src/**/*.{ts,tsx,js,jsx,json}",
 			"packages/**/src/**/*.{ts,tsx,js,jsx,json}",
 			"*.json",
 			"!**/*.gen.ts"
@@ -59,7 +59,9 @@
 	},
 	"overrides": [
 		{
-			"includes": ["apps/api/**"],
+			"includes": [
+				"apps/api/**"
+			],
 			"javascript": {
 				"formatter": {
 					"quoteStyle": "single",
@@ -82,7 +84,11 @@
 			}
 		},
 		{
-			"includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
+			"includes": [
+				"**/*.svelte",
+				"**/*.astro",
+				"**/*.vue"
+			],
 			"linter": {
 				"rules": {
 					"style": {
